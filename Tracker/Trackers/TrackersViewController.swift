@@ -9,11 +9,14 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     
+    private var trackerStore = TrackerStore()
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private var trackerRecordStore = TrackerRecordStore()
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
-    
+    var currentDate: Date = Date()
     private var selectedDate: Int?
     private var filterText: String?
     
@@ -93,6 +96,12 @@ final class TrackersViewController: UIViewController {
         addSubviews()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTrackerButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+        
+        trackerStore.delegate = self
+        trackerRecordStore.delegate = self
+        trackers = trackerStore.trackers
+        completedTrackers = trackerRecordStore.trackerRecords
+        
         let category = TrackerCategory(header: "Домашние дела", trackers: trackers) // тестовая категория для отображения
         categories.append(category)
         showFirstStubScreen()
@@ -104,7 +113,7 @@ final class TrackersViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.allowsMultipleSelection = false
         searchTrackers.delegate = self
-        
+        filterTrackers()
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -160,6 +169,11 @@ final class TrackersViewController: UIViewController {
     }
     
     private func filterTrackers() {
+        filterVisibleCategories()
+        showSecondStubScreen()
+        collectionView.reloadData()
+    }
+    private func filterVisibleCategories() {
         visibleCategories = categories.map { category in
             TrackerCategory(header: category.header, trackers: category.trackers.filter { tracker in
                 let scheduleContains = tracker.schedule?.contains { day in
@@ -175,7 +189,12 @@ final class TrackersViewController: UIViewController {
         .filter { category in
             !category.trackers.isEmpty
         }
-        showSecondStubScreen()
+    }
+}
+
+extension TrackersViewController: TrackerStoreDelegate {
+    func store() {
+        trackers = trackerStore.trackers
         collectionView.reloadData()
     }
 }
@@ -185,6 +204,7 @@ extension TrackersViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.filterText = textField.text
         filterTrackers()
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -195,7 +215,7 @@ extension TrackersViewController: UITextFieldDelegate {
 // MARK: - TrackersActions
 extension TrackersViewController: TrackersActions {
     func appendTracker(tracker: Tracker) {
-        self.trackers.append(tracker)
+        self.trackerStore.addNewTracker(tracker)
         self.categories = self.categories.map { category in
             var updatedTrackers = category.trackers
             updatedTrackers.append(tracker)
@@ -288,14 +308,22 @@ extension TrackersViewController: UICollectionViewDataSource {
 }
 
 // MARK: - TrackerCellDelegate
+extension TrackersViewController: TrackerRecordStoreDelegate {
+    func storeRecord() {
+        completedTrackers = trackerRecordStore.trackerRecords
+        collectionView.reloadData()
+    }
+}
+
 extension TrackersViewController: TrackerCellDelegate {
     func completeTracker(id: UUID, at indexPath: IndexPath) {
         let currentDate = Date()
-        let selectedDate = datePicker.date
         let calendar = Calendar.current
+        let selectedDate = datePicker.date
         if calendar.compare(selectedDate, to: currentDate, toGranularity: .day) != .orderedDescending {
             let trackerRecord = TrackerRecord(id: id, date: selectedDate)
-            completedTrackers.append(trackerRecord)
+        try?
+            self.trackerRecordStore.addNewTrackerRecord(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         } else {
             return
@@ -303,28 +331,36 @@ extension TrackersViewController: TrackerCellDelegate {
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        completedTrackers.removeAll { trackerRecord in
-            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        let toRemove = completedTrackers.first {
+            isSameTrackerRecord(trackerRecord: $0, id: id)
         }
-        collectionView.reloadItems(at: [indexPath])
+        try! self.trackerRecordStore.removeTrackerRecord(toRemove)
     }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 extension TrackersViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.bounds.width / 2 - 5, height: (collectionView.bounds.width / 2 - 5) * 0.88)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 9
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.bounds.width, height: 47)
     }
 }
