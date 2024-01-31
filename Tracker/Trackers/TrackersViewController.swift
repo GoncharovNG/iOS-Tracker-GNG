@@ -12,6 +12,7 @@ final class TrackersViewController: UIViewController {
     private var trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private var trackerRecordStore = TrackerRecordStore()
+    private(set) var categoryViewModel: CategoryViewModel = CategoryViewModel.shared
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
@@ -44,7 +45,11 @@ final class TrackersViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_Ru")
+        datePicker.tintColor = .ypBlue
         datePicker.calendar.firstWeekday = 2
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        datePicker.widthAnchor.constraint(equalToConstant: 100).isActive = true
         datePicker.addTarget(self, action: #selector(pickerChanged), for: .valueChanged)
         return datePicker
     }()
@@ -101,9 +106,9 @@ final class TrackersViewController: UIViewController {
         trackerRecordStore.delegate = self
         trackers = trackerStore.trackers
         completedTrackers = trackerRecordStore.trackerRecords
+        categories = categoryViewModel.categories
         
-        let category = TrackerCategory(header: "Домашние дела", trackers: trackers) // тестовая категория для отображения
-        categories.append(category)
+        filterVisibleCategories()
         showFirstStubScreen()
         
         collectionView.dataSource = self
@@ -113,7 +118,7 @@ final class TrackersViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.allowsMultipleSelection = false
         searchTrackers.delegate = self
-        filterTrackers()
+        
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -214,12 +219,24 @@ extension TrackersViewController: UITextFieldDelegate {
 
 // MARK: - TrackersActions
 extension TrackersViewController: TrackersActions {
-    func appendTracker(tracker: Tracker) {
+    func appendTracker(tracker: Tracker, category: String?) {
+        guard let category = category else { return }
         self.trackerStore.addNewTracker(tracker)
-        self.categories = self.categories.map { category in
-            var updatedTrackers = category.trackers
-            updatedTrackers.append(tracker)
-            return TrackerCategory(header: category.header, trackers: updatedTrackers)
+        let foundCategory = self.categories.first { ctgry in
+            ctgry.header == category
+        }
+        if foundCategory != nil {
+            self.categories = self.categories.map { ctgry in
+                if (ctgry.header == category) {
+                    var updatedTrackers = ctgry.trackers
+                    updatedTrackers.append(tracker)
+                    return TrackerCategory(header: ctgry.header, trackers: updatedTrackers)
+                } else {
+                    return TrackerCategory(header: ctgry.header, trackers: ctgry.trackers)
+                }
+            }
+        } else {
+            self.categories.append(TrackerCategory(header: category, trackers: [tracker]))
         }
         filterTrackers()
     }

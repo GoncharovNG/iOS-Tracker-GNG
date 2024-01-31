@@ -38,5 +38,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     lazy var context: NSManagedObjectContext = {
         return persistentContainer.viewContext
     }()
+    
 }
 
