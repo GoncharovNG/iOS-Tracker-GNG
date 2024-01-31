@@ -5,7 +5,6 @@
 //  Created by Никита Гончаров on 30.01.2024.
 //
 
-import UIKit
 import CoreData
 
 final class CategoryViewModel {
@@ -26,7 +25,7 @@ final class CategoryViewModel {
         try! self.categoryStore.addNewCategory(TrackerCategory(header: toAdd, trackers: []))
     }
     
-    func addTrackerToCategory(to header: String?, tracker: Tracker) {
+    func addTrackerToCategory(to header: TrackerCategory?, tracker: Tracker) {
         try! self.categoryStore.addTrackerToCategory(to: header, tracker: tracker)
     }
     

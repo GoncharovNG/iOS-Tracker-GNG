@@ -9,7 +9,6 @@ import UIKit
 
 protocol TrackersActions {
     func appendTracker(tracker: Tracker, category: String?)
-    
     func reload()
     func showFirstStubScreen()
 }
@@ -21,7 +20,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private var selectedColor: UIColor?
     private var selectedEmoji: String?
-    private var selectedCategory: String?
+    private var selectedCategory: TrackerCategory?
     private var selectedDays: [WeekDay] = []
     private let addCategoryViewController = CategoryViewController()
     private let colors: [UIColor] = [
@@ -197,7 +196,7 @@ final class CreateTrackerViewController: UIViewController {
             trackersTableView.topAnchor.constraint(equalTo: addTrackerName.bottomAnchor, constant: 24),
             trackersTableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
             trackersTableView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
-            trackersTableView.heightAnchor.constraint(equalToConstant: 149),
+            trackersTableView.heightAnchor.constraint(equalToConstant: 150),
             emojiCollectionView.topAnchor.constraint(equalTo: trackersTableView.bottomAnchor, constant: 32),
             emojiCollectionView.heightAnchor.constraint(equalToConstant: 222),
             emojiCollectionView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 18),
@@ -230,13 +229,18 @@ final class CreateTrackerViewController: UIViewController {
     @objc private func createButtonTapped() {
         guard let text = addTrackerName.text, !text.isEmpty,
               let color = selectedColor,
-              let emoji = selectedEmoji else {
+              let emoji = selectedEmoji,
+        let selectedCategory = selectedCategory else {
             return
         }
         
-        let newTracker = Tracker(id: UUID(), title: text, color: color, emoji: emoji, schedule: self.selectedDays)
-        trackersViewController?.appendTracker(tracker: newTracker, category: self.selectedCategory)
-        addCategoryViewController.viewModel.addTrackerToCategory(to: self.selectedCategory, tracker: newTracker)
+        let newTracker = Tracker(id: UUID(),
+                                 title: text,
+                                 color: color,
+                                 emoji: emoji,
+                                 schedule: self.selectedDays)
+        trackersViewController?.appendTracker(tracker: newTracker, category: selectedCategory.header)
+        addCategoryViewController.viewModel.addTrackerToCategory(to: selectedCategory, tracker: newTracker)
         trackersViewController?.reload()
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
@@ -260,7 +264,7 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             addCategoryViewController.viewModel.$selectedCategory.bind { [weak self] categoryName in
-                self?.selectedCategory = categoryName?.header
+                self?.selectedCategory = categoryName
                 self?.trackersTableView.reloadData()
             }
             present(addCategoryViewController, animated: true, completion: nil)
@@ -303,7 +307,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         if indexPath.row == 0 {
             var title = "Категория"
             if let selectedCategory = selectedCategory {
-                title += "\n" + selectedCategory
+                title += "\n" + selectedCategory.header
             }
             cell.update(with: title)
         } else if indexPath.row == 1 {
