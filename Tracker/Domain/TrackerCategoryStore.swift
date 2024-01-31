@@ -8,19 +8,13 @@
 import UIKit
 import CoreData
 
-enum TrackerCategoryStoreError: Error {
-    case decodingErrorInvalidTitle
-    case decodingErrorInvalidTracker
-    case decodingErrorInvalidFetchTitle
-    case decodingErrorInvalid
-}
-
 protocol TrackerCategoryStoreDelegate: AnyObject {
     func storeCategory() -> Void
 }
 
 final class TrackerCategoryStore: NSObject {
-
+    
+    static let shared = TrackerCategoryStore()
     private var context: NSManagedObjectContext
     private lazy var fetchedResultsController = {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
@@ -33,6 +27,7 @@ final class TrackerCategoryStore: NSObject {
             sectionNameKeyPath: nil,
             cacheName: nil
         )
+        controller.delegate = self
         try? controller.performFetch()
         return controller
     }()

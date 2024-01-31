@@ -29,7 +29,6 @@ final class TrackerStore: NSObject {
     }()
         
     private let uiColorMarshalling = UIColorMarshalling()
-//    private let trackerStore = TrackerStore()
     weak var delegate: TrackerStoreDelegate?
     
     var trackers: [Tracker] {

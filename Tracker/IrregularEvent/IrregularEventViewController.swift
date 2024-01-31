@@ -9,9 +9,10 @@ import UIKit
 
 final class IrregularEventViewController: UIViewController {
     
-    let irregularEventCellReuseIdentifier = "IrregularEventTableViewCell"
+    let irregularEventViewCellReuseIdentifier = "IrregularEventTableViewCell"
     var trackersViewController: TrackersActions?
     private let addCategoryViewController = CategoryViewController()
+    private var selectedCategory: String?
     private var selectedColor: UIColor?
     private var selectedEmoji: String?
     private let colors: [UIColor] = [
@@ -141,7 +142,7 @@ final class IrregularEventViewController: UIViewController {
     private func setupIrregularEventTableView() {
         irregularEventTableView.delegate = self
         irregularEventTableView.dataSource = self
-        irregularEventTableView.register(IrregularEventViewCell.self, forCellReuseIdentifier: irregularEventCellReuseIdentifier)
+        irregularEventTableView.register(IrregularEventViewCell.self, forCellReuseIdentifier: irregularEventViewCellReuseIdentifier)
         irregularEventTableView.layer.cornerRadius = 16
         irregularEventTableView.separatorStyle = .none
     }
@@ -222,7 +223,8 @@ final class IrregularEventViewController: UIViewController {
             return
         }
         let newEvent = Tracker(id: UUID(), title: text, color: color, emoji: emoji, schedule: WeekDay.allCases)
-        trackersViewController?.appendTracker(tracker: newEvent)
+        trackersViewController?.appendTracker(tracker: newEvent, category: self.selectedCategory)
+        addCategoryViewController.viewModel.addTrackerToCategory(to: self.selectedCategory, tracker: newEvent)
         trackersViewController?.reload()
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
@@ -234,7 +236,13 @@ extension IrregularEventViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let addCategoryViewController = CategoryViewController()
+        addCategoryViewController.viewModel.$selectedCategory.bind { [weak self] categoryName in
+            self?.selectedCategory = categoryName?.header
+            self?.irregularEventTableView.reloadData()
+        }
         irregularEventTableView.deselectRow(at: indexPath, animated: true)
+        present(addCategoryViewController, animated: true, completion: nil)
     }
 }
 
@@ -245,9 +253,13 @@ extension IrregularEventViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: irregularEventCellReuseIdentifier, for: indexPath) as! IrregularEventViewCell
-        cell.titleLabel.text = "Категория"
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: irregularEventViewCellReuseIdentifier, for: indexPath) as! IrregularEventViewCell
+            var title = "Категория"
+            if let selectedCategory = selectedCategory {
+                title += "\n" + selectedCategory
+            }
+            cell.update(with: title)
+            return cell
     }
 }
 

@@ -8,7 +8,8 @@
 import UIKit
 
 protocol TrackersActions {
-    func appendTracker(tracker: Tracker)
+    func appendTracker(tracker: Tracker, category: String?)
+    
     func reload()
     func showFirstStubScreen()
 }
@@ -225,7 +226,7 @@ final class CreateTrackerViewController: UIViewController {
     @objc private func cancelButtonTapped() {
         dismiss(animated: true)
     }
-    // TODO: Добавить сброс заполненных данных
+    
     @objc private func createButtonTapped() {
         guard let text = addTrackerName.text, !text.isEmpty,
               let color = selectedColor,
@@ -233,12 +234,9 @@ final class CreateTrackerViewController: UIViewController {
             return
         }
         
-        let newTracker = Tracker(id: UUID(),
-                                 title: text,
-                                 color: color,
-                                 emoji: emoji,
-                                 schedule: self.selectedDays)
-        trackersViewController?.appendTracker(tracker: newTracker)
+        let newTracker = Tracker(id: UUID(), title: text, color: color, emoji: emoji, schedule: self.selectedDays)
+        trackersViewController?.appendTracker(tracker: newTracker, category: self.selectedCategory)
+        addCategoryViewController.viewModel.addTrackerToCategory(to: self.selectedCategory, tracker: newTracker)
         trackersViewController?.reload()
         self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
@@ -260,10 +258,17 @@ extension CreateTrackerViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 1 {
+        if indexPath.row == 0 {
+            addCategoryViewController.viewModel.$selectedCategory.bind { [weak self] categoryName in
+                self?.selectedCategory = categoryName?.header
+                self?.trackersTableView.reloadData()
+            }
+            present(addCategoryViewController, animated: true, completion: nil)
+        } else if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
             scheduleViewController.createTrackerViewController = self
             present(scheduleViewController, animated: true, completion: nil)
+            selectedDays = []
         }
         trackersTableView.deselectRow(at: indexPath, animated: true)
     }
@@ -274,9 +279,15 @@ extension CreateTrackerViewController: UITableViewDelegate {
         let separatorHeight: CGFloat = 1.0
         let separatorX = separatorInset
         let separatorY = cell.frame.height - separatorHeight
-        let separatorView = UIView(frame: CGRect(x: separatorX, y: separatorY, width: separatorWidth, height: separatorHeight))
-        separatorView.backgroundColor = .ypGray
-        cell.addSubview(separatorView)
+       
+        
+        let isLastCell = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+        
+        if !isLastCell {
+            let separatorView = UIView(frame: CGRect(x: separatorX, y: separatorY, width: separatorWidth, height: separatorHeight))
+            separatorView.backgroundColor = .ypGray
+            cell.addSubview(separatorView)
+        }
     }
 }
 
@@ -307,7 +318,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
             }
             
             if !subtitle.isEmpty {
-                cell.update(with: "Расписание\n" + subtitle)
+                cell.update(with: !subtitle.isEmpty ? "Расписание\n" + subtitle : "Расписание")
             } else {
                 cell.update(with: "Расписание")
             }
