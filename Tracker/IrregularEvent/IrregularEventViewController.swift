@@ -14,6 +14,7 @@ final class IrregularEventViewController: UIViewController {
     private let addCategoryViewController = CategoryViewController()
     private var selectedCategory: TrackerCategory?
     private var selectedColor: UIColor?
+    private var selectedColorIndex: Int?
     private var selectedEmoji: String?
     private let colors: [UIColor] = [
         .ypColorSelection1, .ypColorSelection2, .ypColorSelection3,
@@ -223,7 +224,16 @@ final class IrregularEventViewController: UIViewController {
               let selectedCategory = selectedCategory else {
             return
         }
-        let newEvent = Tracker(id: UUID(), title: text, color: color, emoji: emoji, schedule: WeekDay.allCases)
+        let newEvent = Tracker(
+            id: UUID(),
+            title: text,
+            color: color,
+            emoji: emoji,
+            schedule: WeekDay.allCases,
+            pinned: false,
+            colorIndex: 0
+        )
+
         trackersViewController?.appendTracker(tracker: newEvent, category: selectedCategory.header)
         addCategoryViewController.viewModel.addTrackerToCategory(to: selectedCategory, tracker: newEvent)
         trackersViewController?.reload()
@@ -377,6 +387,7 @@ extension IrregularEventViewController: UICollectionViewDelegate {
             cell?.layer.borderColor = cell?.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
             
             selectedColor = cell?.colorView.backgroundColor
+            selectedColorIndex = indexPath.row
         }
     }
     
