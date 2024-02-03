@@ -18,7 +18,7 @@ final class OnboardingViewController: UIPageViewController {
         
         pageControl.currentPageIndicatorTintColor = .ypBlackDay
         pageControl.pageIndicatorTintColor = UIColor.ypBlackDay.withAlphaComponent(0.3)
-        
+    
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -58,6 +58,7 @@ final class OnboardingViewController: UIPageViewController {
         setupConstraints()
     }
 }
+  
 
 // MARK: - UIPageViewControllerDataSource
 extension OnboardingViewController: UIPageViewControllerDataSource {
@@ -182,3 +183,7 @@ private extension OnboardingViewController {
         return onboardingVC
     }
 }
+
+
+
+ 

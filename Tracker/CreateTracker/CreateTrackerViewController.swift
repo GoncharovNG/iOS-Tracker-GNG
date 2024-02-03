@@ -56,16 +56,6 @@ final class CreateTrackerViewController: UIViewController {
         return header
     }()
     
-    private let dayCount: UILabel = {
-       let dayCount = UILabel()
-        dayCount.translatesAutoresizingMaskIntoConstraints = false
-        dayCount.text = "0 дней"
-        dayCount.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        dayCount.textColor = .ypBlackDay
-        return dayCount
-
-    }()
-    
     private let addTrackerName: UITextField = {
         let addTrackerName = UITextField()
         addTrackerName.translatesAutoresizingMaskIntoConstraints = false
@@ -144,6 +134,12 @@ final class CreateTrackerViewController: UIViewController {
         collectionView.allowsMultipleSelection = false
         return collectionView
     }()
+    
+    // TODO: - ПОПРАВЬ!
+    
+    private let dayCount = UILabel()
+    
+    private let addCategoryViewController = CategoryViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -318,9 +314,8 @@ extension CreateTrackerViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let addCategoryViewController = CategoryViewController()
-            addCategoryViewController.viewModel.$selectedCategory.bind  { [weak self] category in
-                self?.selectedCategory = category
+            addCategoryViewController.viewModel.$selectedCategory.bind { [weak self] categoryName in
+                self?.selectedCategory = categoryName
                 self?.trackersTableView.reloadData()
             }
             present(addCategoryViewController, animated: true, completion: nil)

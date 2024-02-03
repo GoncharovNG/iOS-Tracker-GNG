@@ -69,12 +69,6 @@ final class TrackerCategoryStore: NSObject {
         try context.save()
     }
     
-    func updateCategory(category: TrackerCategory?, header: String) throws {
-        guard let fromDb = try self.fetchTrackerCategory(with: category) else { fatalError() }
-        fromDb.header = header
-        try context.save()
-    }
-    
     func addTrackerToCategory(to header: TrackerCategory?, tracker: Tracker) throws {
         guard let fromDb = try self.fetchTrackerCategory(with: header) else {
             fatalError()

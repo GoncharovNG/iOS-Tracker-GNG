@@ -13,7 +13,7 @@ final class TrackersViewController: UIViewController {
     private let trackerCategoryStore = TrackerCategoryStore()
     private var trackerRecordStore = TrackerRecordStore()
     private(set) var categoryViewModel: CategoryViewModel = CategoryViewModel.shared
-    private let analyticsService = AnalyticsService()
+    private let analytics = Analytics.shared
     private var trackers: [Tracker] = []
     private var pinnedTrackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
@@ -164,12 +164,12 @@ final class TrackersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        analyticsService.report(event: "open", params: ["screen": "Main"])
+        analytics.report("open", params: ["screen": "Main"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        analyticsService.report(event: "close", params: ["screen": "Main"])
+        analytics.report("close", params: ["screen": "Main"])
     }
     
     private func addSubviews() {
@@ -186,7 +186,7 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func didTapAddTracker() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+        analytics.report("click", params: ["screen": "Main", "item": "add_track"])
         let addTracker = AddTrackerViewController()
         addTracker.trackersViewController = self
         present(addTracker, animated: true, completion: nil)
@@ -198,7 +198,7 @@ final class TrackersViewController: UIViewController {
     }
     
     @objc private func filtersButtonTapped() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
+        analytics.report("click", params: ["screen": "Main", "item": "filter"])
     }
     
     private func selectCurrentDay() {
@@ -479,7 +479,7 @@ extension TrackersViewController: UICollectionViewDelegate {
             
             let editAction = UIAction(title: "Редактировать", handler: { [weak self] _ in
                 guard let self = self else { return }
-               
+                self.analytics.report("click", params: ["screen": "Main", "item": "edit"])
                 let addHabit = CreateTrackerViewController(edit: true)
                 addHabit.trackersViewController = self
                 addHabit.editTracker(
@@ -493,19 +493,17 @@ extension TrackersViewController: UICollectionViewDelegate {
                         $0.id == tracker.id
                     }.count
                 )
-                self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
-                self.collectionView.reloadData()
                 self.present(addHabit, animated: true)
                 
             })
             
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                 guard let self = self else { return }
+                self.analytics.report("click", params: ["screen": "Main", "item": "delete"])
                 
                 let alertController = UIAlertController(title: nil, message: "Уверены что хотите удалить трекер?", preferredStyle: .actionSheet)
                 let deleteConfirmationAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
                     try! self?.trackerStore.deleteTracker(tracker)
-                    self?.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
                     self?.showFirstStubScreen()
                 }
                 alertController.addAction(deleteConfirmationAction)
