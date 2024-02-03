@@ -123,6 +123,7 @@ final class CreateTrackerViewController: UIViewController {
         collectionView.register(EmojiCollectionViewCell.self, forCellWithReuseIdentifier: EmojiCollectionViewCell.reuseId)
         collectionView.register(EmojiHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EmojiHeaderView.id)
         collectionView.allowsMultipleSelection = false
+        collectionView.isScrollEnabled = .clear
         return collectionView
     }()
     
@@ -132,6 +133,7 @@ final class CreateTrackerViewController: UIViewController {
         collectionView.register(ColorsCollectionViewCell.self, forCellWithReuseIdentifier: ColorsCollectionViewCell.reuseId)
         collectionView.register(ColorHeaderViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ColorHeaderViewCell.id)
         collectionView.allowsMultipleSelection = false
+        collectionView.isScrollEnabled = .clear
         return collectionView
     }()
     

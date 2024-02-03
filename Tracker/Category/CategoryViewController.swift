@@ -59,6 +59,7 @@ final class CategoryViewController: UIViewController {
         categoriesTableView.layer.cornerRadius = 16
         categoriesTableView.translatesAutoresizingMaskIntoConstraints = false
         categoriesTableView.isHidden = true
+        categoriesTableView.backgroundColor = .clear
         return categoriesTableView
     }()
     
