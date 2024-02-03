@@ -66,7 +66,6 @@ final class TrackerCategoryStore: NSObject {
         trackerCategoryCoreData.trackers = category.trackers.compactMap {
             $0.id
         }
-//            trackerCD.category = trackerCategoryCoreData
         try context.save()
     }
     
@@ -78,6 +77,13 @@ final class TrackerCategoryStore: NSObject {
             $0.header == fromDb.header
         }?.trackers.map { $0.id }
         fromDb.trackers?.append(tracker.id)
+        try context.save()
+    }
+    
+    func deleteCategory(_ category: TrackerCategory?) throws {
+        let toDelete = try fetchTrackerCategory(with: category)
+        guard let toDelete = toDelete else { return }
+        context.delete(toDelete)
         try context.save()
     }
     

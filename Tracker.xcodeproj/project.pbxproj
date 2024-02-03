@@ -27,7 +27,8 @@
 		4B1A328A2B607213004D410D /* TrackersEntity.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4B1A32882B607213004D410D /* TrackersEntity.xcdatamodeld */; };
 		4B1A328C2B6080E0004D410D /* IrregularEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1A328B2B6080E0004D410D /* IrregularEventViewController.swift */; };
 		4B349B992B63D77B00BD3416 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B349B982B63D77B00BD3416 /* CategoryViewController.swift */; };
-		4B349B9B2B64326F00BD3416 /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B349B9A2B64326F00BD3416 /* DaysValueTransformer.swift */; };
+		4B4E7DA32B6EDD9800D39065 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 4B4E7DA52B6EDD9800D39065 /* Localizable.stringsdict */; };
+		4B800D322B6ECC1600BE3E43 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B800D342B6ECC1600BE3E43 /* Localizable.strings */; };
 		4B9C35282B5C44E500D21F2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C35272B5C44E500D21F2F /* AppDelegate.swift */; };
 		4B9C352A2B5C44E500D21F2F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C35292B5C44E500D21F2F /* SceneDelegate.swift */; };
 		4B9C35342B5C44E700D21F2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9C35332B5C44E700D21F2F /* Assets.xcassets */; };
@@ -69,7 +70,10 @@
 		4B1A32892B607213004D410D /* TrackersEntity.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackersEntity.xcdatamodel; sourceTree = "<group>"; };
 		4B1A328B2B6080E0004D410D /* IrregularEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IrregularEventViewController.swift; sourceTree = "<group>"; };
 		4B349B982B63D77B00BD3416 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
-		4B349B9A2B64326F00BD3416 /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
+		4B4E7DA42B6EDD9800D39065 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		4B4E7DA62B6EDD9A00D39065 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		4B800D332B6ECC1600BE3E43 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		4B800D352B6ECC1A00BE3E43 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4B9C35242B5C44E500D21F2F /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B9C35272B5C44E500D21F2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B9C35292B5C44E500D21F2F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,7 +135,6 @@
 				4B1282D22B5F055F00F93D6D /* TrackerCategoryStore.swift */,
 				4B1282D42B5F057200F93D6D /* TrackerRecordStore.swift */,
 				4B1282D62B5F059C00F93D6D /* UIColorMarshalling.swift */,
-				4B349B9A2B64326F00BD3416 /* DaysValueTransformer.swift */,
 				4BCC8AF22B6855BB00C399FE /* TrackerError.swift */,
 			);
 			path = Domain;
@@ -218,6 +221,8 @@
 				4B9C35332B5C44E700D21F2F /* Assets.xcassets */,
 				4B9D6BB82B5D7BF000554FFE /* LaunchScreen.storyboard */,
 				4B9C35382B5C44E700D21F2F /* Info.plist */,
+				4B4E7DA52B6EDD9800D39065 /* Localizable.stringsdict */,
+				4B800D342B6ECC1600BE3E43 /* Localizable.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -320,6 +325,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 4B9C351B2B5C44E500D21F2F;
 			productRefGroup = 4B9C35252B5C44E500D21F2F /* Products */;
@@ -337,6 +343,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B9D6BB92B5D7BF000554FFE /* LaunchScreen.storyboard in Resources */,
+				4B4E7DA32B6EDD9800D39065 /* Localizable.stringsdict in Resources */,
+				4B800D322B6ECC1600BE3E43 /* Localizable.strings in Resources */,
 				4B9C35342B5C44E700D21F2F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,7 +381,6 @@
 				4B9D6BAB2B5D6B7A00554FFE /* ScheduleViewCell.swift in Sources */,
 				4B0D84062B691653007892CC /* CategoryCell.swift in Sources */,
 				4B9C355C2B5C633900D21F2F /* StatisticViewController.swift in Sources */,
-				4B349B9B2B64326F00BD3416 /* DaysValueTransformer.swift in Sources */,
 				4B0D84082B691670007892CC /* CategoryViewModel.swift in Sources */,
 				4B349B992B63D77B00BD3416 /* CategoryViewController.swift in Sources */,
 				4B1282D52B5F057200F93D6D /* TrackerRecordStore.swift in Sources */,
@@ -389,6 +396,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		4B4E7DA52B6EDD9800D39065 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4B4E7DA42B6EDD9800D39065 /* en */,
+				4B4E7DA62B6EDD9A00D39065 /* ru */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+		4B800D342B6ECC1600BE3E43 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4B800D332B6ECC1600BE3E43 /* ru */,
+				4B800D352B6ECC1A00BE3E43 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		4B9C354F2B5C44E700D21F2F /* Debug */ = {
