@@ -111,7 +111,8 @@ final class IrregularEventViewController: UIViewController {
         collectionView.register(EventEmojiCell.self, forCellWithReuseIdentifier: "Event emoji cell")
         collectionView.register(EventEmojiHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventEmojiHeader.id)
         collectionView.allowsMultipleSelection = false
-        collectionView.isScrollEnabled = .clear
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     
@@ -121,7 +122,8 @@ final class IrregularEventViewController: UIViewController {
         collectionView.register(EventColorCell.self, forCellWithReuseIdentifier: "Event color cell")
         collectionView.register(EventColorHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventColorHeader.id)
         collectionView.allowsMultipleSelection = false
-        collectionView.isScrollEnabled = .clear
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     
