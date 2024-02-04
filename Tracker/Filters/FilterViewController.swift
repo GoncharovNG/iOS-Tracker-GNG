@@ -26,7 +26,7 @@ final class FilterViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
         label.textColor = .ypBlackDay
-        label.backgroundColor = .white
+        label.backgroundColor = .ypWhiteDay
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
