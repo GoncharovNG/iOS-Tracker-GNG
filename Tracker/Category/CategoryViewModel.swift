@@ -39,4 +39,3 @@ extension CategoryViewModel: TrackerCategoryStoreDelegate {
         self.categories = categoryStore.trackerCategories
     }
 }
-

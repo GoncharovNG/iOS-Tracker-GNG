@@ -49,7 +49,6 @@ final class AddTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .ypWhiteDay
         
         NSLayoutConstraint.activate([
@@ -71,7 +70,7 @@ final class AddTrackerViewController: UIViewController {
     }
     
     @objc private func habitButtonTapped() {
-        let addHabit = CreateTrackerViewController()
+        let addHabit = CreateTrackerViewController(edit: false)
         addHabit.trackersViewController = self.trackersViewController
         present(addHabit, animated: true)
     }

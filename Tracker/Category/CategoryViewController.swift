@@ -10,6 +10,7 @@ import UIKit
 final class CategoryViewController: UIViewController {
     
     let cellReuseIdentifier = "CreateCategoryViewController"
+    private var trackerCategoryStore = TrackerCategoryStore()
     private(set) var viewModel: CategoryViewModel = CategoryViewModel.shared
     
     private let header: UILabel = {
@@ -58,6 +59,7 @@ final class CategoryViewController: UIViewController {
         categoriesTableView.layer.cornerRadius = 16
         categoriesTableView.translatesAutoresizingMaskIntoConstraints = false
         categoriesTableView.isHidden = true
+        categoriesTableView.backgroundColor = .clear
         return categoriesTableView
     }()
     
@@ -104,7 +106,15 @@ final class CategoryViewController: UIViewController {
         categoriesTableView.delegate = self
         categoriesTableView.dataSource = self
         categoriesTableView.register(CategoryCell.self, forCellReuseIdentifier: cellReuseIdentifier)
-        if !viewModel.categories.isEmpty {
+        checkEmptyCategoriesScreen()
+    }
+    
+    private func checkEmptyCategoriesScreen() {
+        if viewModel.categories.isEmpty {
+            categoriesTableView.isHidden = true
+            emptyCategoryLogo.isHidden = false
+            emptyCategoryText.isHidden = false
+        } else {
             categoriesTableView.isHidden = false
             emptyCategoryLogo.isHidden = true
             emptyCategoryText.isHidden = true
@@ -120,6 +130,10 @@ final class CategoryViewController: UIViewController {
 
 // MARK: - CategoryActions
 extension CategoryViewController: CategoryActions {
+    func updateCategory(category: TrackerCategory?, header: String) {
+        
+    }
+    
     func appendCategory(category: String) {
         viewModel.addCategory(category)
         categoriesTableView.isHidden = false
@@ -168,6 +182,43 @@ extension CategoryViewController: UITableViewDelegate {
             separatorView.backgroundColor = .ypGray
             cell.addSubview(separatorView)
         }
+    }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let category = self.viewModel.categories[indexPath.row]
+
+        let configuration = UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                guard let self = self else { return }
+
+                let createCategoryViewController = CreateCategoryViewController()
+                createCategoryViewController.categoryViewController = self
+                createCategoryViewController.editCategory(category, newHeader: "Редактирование категории")
+                self.present(createCategoryViewController, animated: true, completion: nil)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
+                let alertController = UIAlertController(title: nil, message: "Эта категория точно не нужна?", preferredStyle: .actionSheet)
+                let deleteConfirmationAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
+                    try! self.trackerCategoryStore.deleteCategory(category)
+                    self.checkEmptyCategoriesScreen()
+                    self.categoriesTableView.reloadData()
+                }
+                alertController.addAction(deleteConfirmationAction)
+                
+                let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+                alertController.addAction(cancelAction)
+                
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+            let actions = [editAction, deleteAction]
+            return UIMenu(title: "", children: actions)
+        }
+        
+        return configuration
     }
 }
 
