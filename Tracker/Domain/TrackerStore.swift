@@ -28,7 +28,7 @@ final class TrackerStore: NSObject {
         try? controller.performFetch()
         return controller
     }()
-        
+    
     private let uiColorMarshalling = UIColorMarshalling()
     weak var delegate: TrackerStoreDelegate?
     
@@ -103,7 +103,7 @@ final class TrackerStore: NSObject {
                        pinned: trackerCoreData.pinned,
                        colorIndex: Int(trackerCoreData.colorIndex))
     }
-
+    
     func deleteTracker(_ tracker: Tracker?) throws {
         let toDelete = try fetchTracker(with: tracker)
         guard let toDelete = toDelete else { return }

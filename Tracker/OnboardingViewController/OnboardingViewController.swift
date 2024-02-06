@@ -18,7 +18,7 @@ final class OnboardingViewController: UIPageViewController {
         
         pageControl.currentPageIndicatorTintColor = .black
         pageControl.pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.3)
-    
+        
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -58,7 +58,7 @@ final class OnboardingViewController: UIPageViewController {
         setupConstraints()
     }
 }
-  
+
 
 // MARK: - UIPageViewControllerDataSource
 extension OnboardingViewController: UIPageViewControllerDataSource {
@@ -103,7 +103,7 @@ extension OnboardingViewController: UIPageViewControllerDelegate {
 }
 
 // MARK: - Private Methods
- 
+
 private extension OnboardingViewController {
     func setupOnboardingPages() {
         
@@ -127,12 +127,12 @@ private extension OnboardingViewController {
     
     func setupSubviews() {
         [pageControl,
-                button
-               ].forEach {
-                   $0.translatesAutoresizingMaskIntoConstraints = false
-                   view.addSubview($0)
-               }
-
+         button
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+        
     }
     
     func setupConstraints() {

@@ -74,8 +74,8 @@ final class TrackerCell: UICollectionViewCell {
         return trackerEmoji
     }()
     
-    let pinnedTracker: UIImageView = {
-       let pinnedTracker = UIImageView()
+    private let pinnedTracker: UIImageView = {
+        let pinnedTracker = UIImageView()
         pinnedTracker.image = UIImage(named: "Pin")
         pinnedTracker.translatesAutoresizingMaskIntoConstraints = false
         return pinnedTracker
@@ -98,7 +98,7 @@ final class TrackerCell: UICollectionViewCell {
             trackerEmoji.centerXAnchor.constraint(equalTo: emojiBackground.centerXAnchor),
             trackerEmoji.centerYAnchor.constraint(equalTo: emojiBackground.centerYAnchor),
             pinnedTracker.centerYAnchor.constraint(equalTo: trackerEmoji.centerYAnchor),
-                       pinnedTracker.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12)
+            pinnedTracker.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12)
         ])
     }
     

@@ -46,7 +46,7 @@ final class CategoryCell: UITableViewCell {
     }
     
     func update(with title: String) {
-         titleLabel.text = title
+        titleLabel.text = title
     }
     
     func done(with image: UIImage) {

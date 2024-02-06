@@ -17,7 +17,7 @@ final class CreateCategoryViewController: UIViewController {
     
     var categoryViewController: CategoryActions?
     var categoryToEdit: TrackerCategory?
-
+    
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false

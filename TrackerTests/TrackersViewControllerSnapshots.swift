@@ -25,7 +25,7 @@ final class TrackersViewControllerSnapshots: XCTestCase {
     
     func testLightSnapshot() throws {
         let embeddedController = UINavigationController(rootViewController: subject)
-
+        
         assertSnapshot(
             matching: embeddedController,
             as: .image(traits: .init(userInterfaceStyle: .light))
@@ -34,7 +34,7 @@ final class TrackersViewControllerSnapshots: XCTestCase {
     
     func testDarkSnapshot() throws {
         let embeddedController = UINavigationController(rootViewController: subject)
-
+        
         assertSnapshot(
             matching: embeddedController,
             as: .image(traits: .init(userInterfaceStyle: .dark))

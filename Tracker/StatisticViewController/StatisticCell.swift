@@ -83,9 +83,9 @@ final class StatisticCell: UITableViewCell {
     }
     
     override func layoutSubviews() {
-            super.layoutSubviews()
-            gradientLayer.frame = borderView.bounds
-        }
+        super.layoutSubviews()
+        gradientLayer.frame = borderView.bounds
+    }
     
     func update(with title: String, count: String) {
         titleLabel.text = title

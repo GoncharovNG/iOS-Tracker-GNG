@@ -34,7 +34,7 @@ final class IrregularEventViewController: UIViewController {
         scrollView.isScrollEnabled = true
         return scrollView
     }()
-
+    
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
@@ -139,11 +139,11 @@ final class IrregularEventViewController: UIViewController {
         setupEmojiCollectionView()
         setupColorCollectionView()
     }
-
+    
     private func setupEventNameTextField() {
         addEventName.delegate = self
     }
-
+    
     private func setupIrregularEventTableView() {
         irregularEventTableView.delegate = self
         irregularEventTableView.dataSource = self
@@ -151,13 +151,13 @@ final class IrregularEventViewController: UIViewController {
         irregularEventTableView.layer.cornerRadius = 16
         irregularEventTableView.separatorStyle = .none
     }
-
+    
     private func setupEmojiCollectionView() {
         emojiCollectionView.dataSource = self
         emojiCollectionView.delegate = self
         emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
     }
-
+    
     private func setupColorCollectionView() {
         colorCollectionView.dataSource = self
         colorCollectionView.delegate = self
@@ -237,7 +237,7 @@ final class IrregularEventViewController: UIViewController {
             pinned: false,
             colorIndex: 0
         )
-
+        
         trackersViewController?.appendTracker(tracker: newEvent, category: selectedCategory.header)
         addCategoryViewController.viewModel.addTrackerToCategory(to: selectedCategory, tracker: newEvent)
         trackersViewController?.reload()
@@ -269,12 +269,12 @@ extension IrregularEventViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: irregularEventViewCellReuseIdentifier, for: indexPath) as! IrregularEventViewCell
-            var title = NSLocalizedString("createTracker.cell.category.title", comment: "")
-            if let selectedCategory = selectedCategory {
-                title += "\n" + selectedCategory.header
-            }
-            cell.update(with: title)
-            return cell
+        var title = NSLocalizedString("createTracker.cell.category.title", comment: "")
+        if let selectedCategory = selectedCategory {
+            title += "\n" + selectedCategory.header
+        }
+        cell.update(with: title)
+        return cell
     }
 }
 

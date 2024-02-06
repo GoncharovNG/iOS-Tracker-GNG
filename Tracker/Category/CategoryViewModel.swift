@@ -8,7 +8,7 @@
 import CoreData
 
 final class CategoryViewModel {
-        
+    
     static let shared = CategoryViewModel()
     private var categoryStore = TrackerCategoryStore.shared
     private (set) var categories: [TrackerCategory] = []

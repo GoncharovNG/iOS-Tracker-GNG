@@ -12,7 +12,7 @@ enum Filters: CaseIterable {
     case trackersToday
     case completedTrackers
     case unCompletedTrackers
-
+    
     var description: String {
         switch self {
         case .allTrackers:

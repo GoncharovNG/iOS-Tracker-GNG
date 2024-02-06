@@ -107,9 +107,9 @@ final class TrackerCategoryStore: NSObject {
         return result.first
     }
 }
-    // MARK: - NSFetchedResultsControllerDelegate
-    extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
-        func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            delegate?.storeCategory()
-        }
+// MARK: - NSFetchedResultsControllerDelegate
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.storeCategory()
     }
+}

@@ -9,7 +9,7 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     
-   weak var trackersViewController: TrackersViewController?
+    weak var trackersViewController: TrackersViewController?
     
     private lazy var header: UILabel = {
         let header = UILabel()
@@ -24,12 +24,12 @@ final class AddTrackerViewController: UIViewController {
     private lazy var habitButton: UIButton = {
         let habitButton = UIButton(type: .custom)
         view.addSubview(habitButton)
-
+        
         habitButton.setTitle(
             NSLocalizedString("addTracker.habbitButton.title", comment: ""),
             for: .normal
         )
-
+        
         habitButton.setTitleColor(.ypWhiteDay, for: .normal)
         habitButton.backgroundColor = .ypBlackDay
         habitButton.layer.cornerRadius = 16
@@ -46,12 +46,12 @@ final class AddTrackerViewController: UIViewController {
         irregularButton.backgroundColor = .ypBlackDay
         irregularButton.layer.cornerRadius = 16
         irregularButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-
+        
         irregularButton.setTitle(
             NSLocalizedString("addTracker.irregularButton.title", comment: ""),
             for: .normal
         )
-
+        
         irregularButton.addTarget(self, action: #selector(irregularButtonTapped), for: .touchUpInside)
         irregularButton.translatesAutoresizingMaskIntoConstraints = false
         return irregularButton

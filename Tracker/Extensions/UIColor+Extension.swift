@@ -11,13 +11,13 @@ extension UIColor {
     static var ypBlue: UIColor { UIColor(named: "Blue") ?? UIColor.blue }
     static var ypRed: UIColor { UIColor(named: "Red") ?? UIColor.red }
     static var ypBlackDay: UIColor { UIColor(named: "Black [day]") ?? UIColor.black}
-  //  static var ypBlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.white}
+    //  static var ypBlackNight: UIColor { UIColor(named: "Black [night]") ?? UIColor.white}
     static var ypBackgroundDay: UIColor { UIColor(named: "Background [day]") ?? UIColor.lightGray }
- //   static var ypBackgroundNight: UIColor { UIColor(named: "Background [night]") ?? UIColor.darkGray }
+    //   static var ypBackgroundNight: UIColor { UIColor(named: "Background [night]") ?? UIColor.darkGray }
     static var ypGray: UIColor { UIColor(named: "Gray") ?? UIColor.gray }
     static var ypLightGray: UIColor { UIColor(named: "Light Gray") ?? UIColor.lightGray }
     static var ypWhiteDay: UIColor { UIColor(named: "White [day]") ?? UIColor.white}
- //   static var ypWhiteNight: UIColor { UIColor(named: "White [night]") ?? UIColor.black}
+    //   static var ypWhiteNight: UIColor { UIColor(named: "White [night]") ?? UIColor.black}
     // Color selections
     static var ypColorSelection1: UIColor { UIColor(named: "Color selection 1") ?? UIColor.red }
     static var ypColorSelection2: UIColor { UIColor(named: "Color selection 2") ?? UIColor.orange }

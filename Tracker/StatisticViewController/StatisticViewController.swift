@@ -56,7 +56,7 @@ final class StatisticViewController: UIViewController {
         statisticTableView.dataSource = self
         statisticTableView.register(StatisticCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         statisticTableView.reloadData()
-                
+        
         NSLayoutConstraint.activate([
             header.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
             header.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
