@@ -35,7 +35,7 @@
 		4B8854282B6F0A6400DEDC5C /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8854272B6F0A6400DEDC5C /* Analytics.swift */; };
 		4B88542B2B6F0AE100DEDC5C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B88542D2B6F0AE100DEDC5C /* Localizable.strings */; };
 		4B8854312B6F0B1600DEDC5C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 4B8854332B6F0B1600DEDC5C /* Localizable.stringsdict */; };
-		4B88543D2B6F0B9800DEDC5C /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B88543C2B6F0B9800DEDC5C /* TrackerTests.swift */; };
+		4B88543D2B6F0B9800DEDC5C /* TrackersViewControllerSnapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B88543C2B6F0B9800DEDC5C /* TrackersViewControllerSnapshots.swift */; };
 		4B9C35282B5C44E500D21F2F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C35272B5C44E500D21F2F /* AppDelegate.swift */; };
 		4B9C352A2B5C44E500D21F2F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9C35292B5C44E500D21F2F /* SceneDelegate.swift */; };
 		4B9C35342B5C44E700D21F2F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B9C35332B5C44E700D21F2F /* Assets.xcassets */; };
@@ -101,7 +101,7 @@
 		4B8854322B6F0B1600DEDC5C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		4B8854342B6F0B1900DEDC5C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		4B88543A2B6F0B9700DEDC5C /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4B88543C2B6F0B9800DEDC5C /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
+		4B88543C2B6F0B9800DEDC5C /* TrackersViewControllerSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewControllerSnapshots.swift; sourceTree = "<group>"; };
 		4B9C35242B5C44E500D21F2F /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B9C35272B5C44E500D21F2F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B9C35292B5C44E500D21F2F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -231,7 +231,7 @@
 		4B88543B2B6F0B9800DEDC5C /* TrackerTests */ = {
 			isa = PBXGroup;
 			children = (
-				4B88543C2B6F0B9800DEDC5C /* TrackerTests.swift */,
+				4B88543C2B6F0B9800DEDC5C /* TrackersViewControllerSnapshots.swift */,
 			);
 			path = TrackerTests;
 			sourceTree = "<group>";
@@ -384,7 +384,6 @@
 				39CFEDF6BAC2FDF4BAE7B251 /* Pods-TrackerTests.debug.xcconfig */,
 				BBF917E523FA113822FC3FC2 /* Pods-TrackerTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -558,7 +557,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B88543D2B6F0B9800DEDC5C /* TrackerTests.swift in Sources */,
+				4B88543D2B6F0B9800DEDC5C /* TrackersViewControllerSnapshots.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

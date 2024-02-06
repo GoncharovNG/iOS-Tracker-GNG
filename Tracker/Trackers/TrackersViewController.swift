@@ -7,6 +7,8 @@
 
 import UIKit
 
+import UIKit
+
 final class TrackersViewController: UIViewController {
     
     private var trackerStore = TrackerStore()
@@ -193,12 +195,13 @@ final class TrackersViewController: UIViewController {
     
     @objc private func pickerChanged() {
         selectCurrentDay()
-        filterTrackers()
+        filterTrackers(forToday: true)
     }
     
     @objc private func filtersButtonTapped() {
         analytics.report("click", params: ["screen": "Main", "item": "filter"])
         let filterViewController = FilterViewController()
+        filterViewController.delegate = self
         present(filterViewController, animated: true)
     }
     
@@ -208,13 +211,13 @@ final class TrackersViewController: UIViewController {
         self.selectedDate = filterWeekday
     }
     
-    private func filterTrackers() {
-        filterVisibleCategories()
+    private func filterTrackers(forToday: Bool = false) {
+        filterVisibleCategories(forToday: forToday)
         showSecondStubScreen()
         collectionView.reloadData()
     }
     
-    private func filterVisibleCategories() {
+    private func filterVisibleCategories(forToday: Bool = false) {
         visibleCategories = categories.map { category in
             if category.header == "Закрепленные" {
                 return TrackerCategory(header: category.header, trackers: pinnedTrackers.filter { tracker in
@@ -224,12 +227,14 @@ final class TrackersViewController: UIViewController {
                 return TrackerCategory(header: category.header, trackers: trackers.filter { tracker in
                     let categoriesContains = category.trackers.contains { $0.id == tracker.id }
                     let pinnedContains = pinnedTrackers.contains{ $0.id == tracker.id }
-                    let scheduleContains = tracker.schedule?.contains { day in
+                    let scheduleContains = forToday ? (tracker.schedule?.contains { day in
                         guard let currentDay = self.selectedDate else {
                             return true
                         }
                         return day.rawValue == currentDay
-                    } ?? false
+                    } ?? false) : true
+                    
+                    
                     let titleContains = tracker.title.contains(self.filterText ?? "") || (self.filterText ?? "").isEmpty
                     return scheduleContains && titleContains && categoriesContains && !pinnedContains
                 })
@@ -238,6 +243,40 @@ final class TrackersViewController: UIViewController {
         .filter { category in
             !category.trackers.isEmpty
         }
+    }
+}
+
+// MARK: - TrackerStoreDelegate
+
+extension TrackersViewController: FilterViewControllerDelegate {
+    func allTrackers() {
+        trackers = trackerStore.trackers
+        filterVisibleCategories(forToday: false)
+        collectionView.reloadData()
+    }
+    
+    func trackersToday() {
+        let weekday = Calendar.current.component(.weekday, from: Date())
+        
+        trackers = trackerStore.trackers.filter {
+            $0.schedule?.contains(where: { $0.rawValue ==  weekday}) ?? false
+        }
+        
+        filterVisibleCategories()
+        collectionView.reloadData()
+    }
+    
+    func completedTrackersToday() {
+        trackers = trackerStore.trackers.filter { isTrackerCompletedToday(id: $0.id) }
+        
+        filterVisibleCategories()
+        collectionView.reloadData()
+    }
+    
+    func unCompletedTrackersToday() {
+        trackers = trackerStore.trackers.filter { !isTrackerCompletedToday(id: $0.id) }
+        filterVisibleCategories()
+        collectionView.reloadData()
     }
 }
 
@@ -409,7 +448,7 @@ extension TrackersViewController: TrackerCellDelegate {
         let selectedDate = datePicker.date
         if calendar.compare(selectedDate, to: currentDate, toGranularity: .day) != .orderedDescending {
             let trackerRecord = TrackerRecord(id: id, date: selectedDate)
-        try?
+            try?
             self.trackerRecordStore.addNewTrackerRecord(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         } else {

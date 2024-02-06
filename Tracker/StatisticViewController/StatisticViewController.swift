@@ -9,6 +9,7 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
+    private let recordStore = TrackerRecordStore()
     let cellReuseIdentifier = "StatisticViewController"
     var trackersViewController: TrackersViewController?
     
@@ -74,6 +75,7 @@ final class StatisticViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        showPlaceholder()
         statisticTableView.reloadData()
     }
     
@@ -85,16 +87,14 @@ final class StatisticViewController: UIViewController {
     }
     
     private func showPlaceholder() {
-        guard let trackersViewController = trackersViewController else { return }
-        
-        if trackersViewController.completedTrackers.count > 0 {
-            emptyStatistic.isHidden = true
-            emptyStatisticText.isHidden = true
-            statisticTableView.isHidden = false
-        } else {
+        if recordStore.trackerRecords.isEmpty {
             emptyStatistic.isHidden = false
             emptyStatisticText.isHidden = false
             statisticTableView.isHidden = true
+        } else {
+            emptyStatistic.isHidden = true
+            emptyStatisticText.isHidden = true
+            statisticTableView.isHidden = false
         }
     }
 }
@@ -133,8 +133,6 @@ extension StatisticViewController: UITableViewDataSource {
         default:
             break
         }
-        
-        showPlaceholder()
         
         var count = ""
         
