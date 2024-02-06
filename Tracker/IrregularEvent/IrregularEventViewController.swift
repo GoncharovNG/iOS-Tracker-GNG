@@ -38,7 +38,7 @@ final class IrregularEventViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Новое нерегулярное событие"
+        header.text = NSLocalizedString("irregularEvent.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header
@@ -47,7 +47,7 @@ final class IrregularEventViewController: UIViewController {
     private let addEventName: UITextField = {
         let addTrackerName = UITextField()
         addTrackerName.translatesAutoresizingMaskIntoConstraints = false
-        addTrackerName.placeholder = "Введите название трекера"
+        addTrackerName.placeholder = NSLocalizedString("createTracker.textField.addTrackerName.placeholder", comment: "")
         addTrackerName.backgroundColor = .ypBackgroundDay
         addTrackerName.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
@@ -72,7 +72,7 @@ final class IrregularEventViewController: UIViewController {
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.layer.cornerRadius = 16
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("button.cancel.title", comment: ""), for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         return cancelButton
@@ -98,7 +98,7 @@ final class IrregularEventViewController: UIViewController {
         createButton.backgroundColor = .ypGray
         createButton.layer.cornerRadius = 16
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(NSLocalizedString("button.create.title", comment: ""), for: .normal)
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.isEnabled = false
@@ -269,7 +269,7 @@ extension IrregularEventViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: irregularEventViewCellReuseIdentifier, for: indexPath) as! IrregularEventViewCell
-            var title = "Категория"
+            var title = NSLocalizedString("createTracker.cell.category.title", comment: "")
             if let selectedCategory = selectedCategory {
                 title += "\n" + selectedCategory.header
             }
@@ -343,7 +343,7 @@ extension IrregularEventViewController: UICollectionViewDataSource {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: EventColorHeader.id, for: indexPath) as? EventColorHeader else {
                 return UICollectionReusableView()
             }
-            header.headerText = "Цвет"
+            header.headerText = NSLocalizedString("createTracker.header.color.title", comment: "")
             return header
         }
         

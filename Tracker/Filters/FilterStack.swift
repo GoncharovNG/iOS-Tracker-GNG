@@ -7,9 +7,22 @@
 
 import Foundation
 
-enum Filters: String, CaseIterable {
-    case allTrackers = "Все трекеры"
-    case trackersToday = "Трекеры на сегодня"
-    case completedTrackers =  "Завершенные"
-    case unCompletedTrackers =  "Не завершенные"
+enum Filters: CaseIterable {
+    case allTrackers
+    case trackersToday
+    case completedTrackers
+    case unCompletedTrackers
+
+    var description: String {
+        switch self {
+        case .allTrackers:
+            return NSLocalizedString("filters.cell.allTrackers.title", comment: "")
+        case .trackersToday:
+            return NSLocalizedString("filters.cell.trackersToday.title", comment: "")
+        case .completedTrackers:
+            return NSLocalizedString("filters.cell.completedTrackers.title", comment: "")
+        case .unCompletedTrackers:
+            return NSLocalizedString("filters.cell.uncompletedTrackers.title", comment: "")
+        }
+    }
 }

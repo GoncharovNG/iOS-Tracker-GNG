@@ -16,7 +16,7 @@ final class CategoryViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Категория"
+        header.text = NSLocalizedString("createTracker.cell.category.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header

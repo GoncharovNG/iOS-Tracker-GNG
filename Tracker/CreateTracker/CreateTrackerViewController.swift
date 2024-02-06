@@ -50,7 +50,7 @@ final class CreateTrackerViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Новая привычка"
+        header.text = NSLocalizedString("createTracker.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header
@@ -59,7 +59,7 @@ final class CreateTrackerViewController: UIViewController {
     private let addTrackerName: UITextField = {
         let addTrackerName = UITextField()
         addTrackerName.translatesAutoresizingMaskIntoConstraints = false
-        addTrackerName.placeholder = "Введите название трекера"
+        addTrackerName.placeholder = NSLocalizedString("createTracker.textField.addTrackerName.placeholder", comment: "")
         addTrackerName.backgroundColor = .ypBackgroundDay
         addTrackerName.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
@@ -78,7 +78,7 @@ final class CreateTrackerViewController: UIViewController {
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.layer.cornerRadius = 16
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("button.cancel.title", comment: ""), for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         return cancelButton
@@ -110,7 +110,7 @@ final class CreateTrackerViewController: UIViewController {
         createButton.backgroundColor = .ypGray
         createButton.layer.cornerRadius = 16
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(NSLocalizedString("button.create.title", comment: ""), for: .normal)
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.isEnabled = false
@@ -360,7 +360,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as? CreateTrackerViewCell else { return UITableViewCell() }
         
         if indexPath.row == 0 {
-            var title = "Категория"
+            var title = NSLocalizedString("createTracker.cell.category.title", comment: "")
             if let selectedCategory = selectedCategory {
                 title += "\n" + selectedCategory.header
             }
@@ -376,10 +376,13 @@ extension CreateTrackerViewController: UITableViewDataSource {
                 }
             }
             
+            let scheduleTitle = NSLocalizedString("schedule.title", comment: "")
+            
             if !subtitle.isEmpty {
-                cell.update(with: !subtitle.isEmpty ? "Расписание\n" + subtitle : "Расписание")
+                cell.update(
+                    with: !subtitle.isEmpty ? scheduleTitle + "\n" + subtitle : scheduleTitle)
             } else {
-                cell.update(with: "Расписание")
+                cell.update(with: scheduleTitle)
             }
         }
         
@@ -466,7 +469,7 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ColorHeaderViewCell.id, for: indexPath) as? ColorHeaderViewCell else {
                 return UICollectionReusableView()
             }
-            header.headerText = "Цвет"
+            header.headerText = NSLocalizedString("createTracker.header.color.title", comment: "")
             return header
         }
         

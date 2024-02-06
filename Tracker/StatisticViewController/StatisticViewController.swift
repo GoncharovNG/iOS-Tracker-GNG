@@ -16,7 +16,7 @@ final class StatisticViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Статистика"
+        header.text = NSLocalizedString("statistic.title", comment: "")
         header.textColor = .ypBlackDay
         header.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         return header
@@ -32,7 +32,7 @@ final class StatisticViewController: UIViewController {
     private let emptyStatisticText: UILabel = {
         let emptySearchText = UILabel()
         emptySearchText.translatesAutoresizingMaskIntoConstraints = false
-        emptySearchText.text = "Анализировать пока нечего"
+        emptySearchText.text = NSLocalizedString("statistic.emptyData", comment: "")
         emptySearchText.textColor = .ypBlackDay
         emptySearchText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return emptySearchText
@@ -123,13 +123,13 @@ extension StatisticViewController: UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            title = "Лучший период"
+            title = NSLocalizedString("statistic.cell.bestPeriod.title", comment: "")
         case 1:
-            title = "Идеальные дни"
+            title = NSLocalizedString("statistic.cell.idealDays.title", comment: "")
         case 2:
-            title = "Трекеров завершено"
+            title = NSLocalizedString("statistic.cell.trackersCompleted.title", comment: "")
         case 3:
-            title = "Среднее значение"
+            title = NSLocalizedString("statistic.cell.averageValue.title", comment: "")
         default:
             break
         }

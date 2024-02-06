@@ -22,7 +22,7 @@ final class FilterViewController: UIViewController {
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Фильтры"
+        label.text = NSLocalizedString("filters.title", comment: "")
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
         label.textColor = .ypBlackDay
@@ -139,7 +139,7 @@ extension FilterViewController: UITableViewDataSource {
             for: indexPath) as? FilterCell else { return UITableViewCell() }
         let filterText = trackerFilters[indexPath.row]
         
-        cell.textLabel?.text = filterText.rawValue
+        cell.textLabel?.text = filterText.description
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         
         cell.layer.masksToBounds = true

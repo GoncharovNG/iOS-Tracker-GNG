@@ -140,11 +140,11 @@ final class TrackerCell: UICollectionViewCell {
         
         switch lastDigit {
         case 1:
-            return "\(completedDays) день"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.day.title", comment: "")
         case 2, 3, 4:
-            return "\(completedDays) дня"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.day.genetive.title", comment: "")
         default:
-            return "\(completedDays) дней"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.days.title", comment: "")
         }
     }
     

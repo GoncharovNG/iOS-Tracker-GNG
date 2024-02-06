@@ -31,7 +31,7 @@ final class TrackersViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Трекеры"
+        header.text = NSLocalizedString("app.title", comment: "")
         header.textColor = .ypBlackDay
         header.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         return header
@@ -40,7 +40,7 @@ final class TrackersViewController: UIViewController {
     private let searchTrackers: UISearchTextField = {
         let searchTrackers = UISearchTextField()
         searchTrackers.translatesAutoresizingMaskIntoConstraints = false
-        searchTrackers.placeholder = "Поиск"
+        searchTrackers.placeholder = NSLocalizedString("searchBar.placholder", comment: "")
         return searchTrackers
     }()
     
@@ -49,7 +49,6 @@ final class TrackersViewController: UIViewController {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_Ru")
         datePicker.tintColor = .ypBlue
         datePicker.calendar.firstWeekday = 2
         datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +68,7 @@ final class TrackersViewController: UIViewController {
     private let emptyTrackersText: UILabel = {
         let emptyTrackersText = UILabel()
         emptyTrackersText.translatesAutoresizingMaskIntoConstraints = false
-        emptyTrackersText.text = "Что будем отслеживать?"
+        emptyTrackersText.text = NSLocalizedString("trackers.emptyData", comment: "")
         emptyTrackersText.textColor = .ypBlackDay
         emptyTrackersText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         return emptyTrackersText
