@@ -451,6 +451,7 @@ extension TrackersViewController: TrackerCellDelegate {
             try?
             self.trackerRecordStore.addNewTrackerRecord(trackerRecord)
             collectionView.reloadItems(at: [indexPath])
+            analytics.report("click", params: ["screen": "Main", "item": "complete"])
         } else {
             return
         }
