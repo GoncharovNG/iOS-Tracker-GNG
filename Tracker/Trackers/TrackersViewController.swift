@@ -242,6 +242,7 @@ final class TrackersViewController: UIViewController {
         .filter { category in
             !category.trackers.isEmpty
         }
+        showSecondStubScreen()
     }
 }
 
