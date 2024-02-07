@@ -267,17 +267,19 @@ extension TrackersViewController: FilterViewControllerDelegate {
     }
     
     func completedTrackersToday() {
-        trackers = trackerStore.trackers.filter { isTrackerCompletedToday(id: $0.id) }
+            analytics.report("click", params: ["event": "tap", "screen": "Main"])
+            trackers = trackerStore.trackers.filter { isTrackerCompletedToday(id: $0.id) }
+            
+            filterVisibleCategories()
+            collectionView.reloadData()
+        }
         
-        filterVisibleCategories()
-        collectionView.reloadData()
-    }
-    
-    func unCompletedTrackersToday() {
-        trackers = trackerStore.trackers.filter { !isTrackerCompletedToday(id: $0.id) }
-        filterVisibleCategories()
-        collectionView.reloadData()
-    }
+        func unCompletedTrackersToday() {
+            analytics.report("click", params: ["event": "tap", "screen": "Main"])
+            trackers = trackerStore.trackers.filter { !isTrackerCompletedToday(id: $0.id) }
+            filterVisibleCategories()
+            collectionView.reloadData()
+        }
 }
 
 // MARK: - TrackerStoreDelegate
