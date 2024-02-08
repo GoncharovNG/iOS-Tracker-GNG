@@ -8,7 +8,7 @@
 import CoreData
 
 final class CategoryViewModel {
-        
+    
     static let shared = CategoryViewModel()
     private var categoryStore = TrackerCategoryStore.shared
     private (set) var categories: [TrackerCategory] = []
@@ -22,11 +22,11 @@ final class CategoryViewModel {
     }
     
     func addCategory(_ toAdd: String) {
-        try! self.categoryStore.addNewCategory(TrackerCategory(header: toAdd, trackers: []))
+        try? self.categoryStore.addNewCategory(TrackerCategory(header: toAdd, trackers: []))
     }
     
     func addTrackerToCategory(to header: TrackerCategory?, tracker: Tracker) {
-        try! self.categoryStore.addTrackerToCategory(to: header, tracker: tracker)
+        try? self.categoryStore.addTrackerToCategory(to: header, tracker: tracker)
     }
     
     func selectCategory(_ at: Int) {
@@ -39,4 +39,3 @@ extension CategoryViewModel: TrackerCategoryStoreDelegate {
         self.categories = categoryStore.trackerCategories
     }
 }
-

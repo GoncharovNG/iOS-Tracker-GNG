@@ -16,9 +16,9 @@ final class OnboardingViewController: UIPageViewController {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         
-        pageControl.currentPageIndicatorTintColor = .ypBlackDay
-        pageControl.pageIndicatorTintColor = UIColor.ypBlackDay.withAlphaComponent(0.3)
-    
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.3)
+        
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -26,11 +26,12 @@ final class OnboardingViewController: UIPageViewController {
     private lazy var button: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Вот это технологии!", for: .normal)
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .black
         button.layer.cornerRadius = 16
-        button.setTitleColor(.ypWhiteDay, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
@@ -57,7 +58,7 @@ final class OnboardingViewController: UIPageViewController {
         setupConstraints()
     }
 }
-  
+
 
 // MARK: - UIPageViewControllerDataSource
 extension OnboardingViewController: UIPageViewControllerDataSource {
@@ -102,7 +103,7 @@ extension OnboardingViewController: UIPageViewControllerDelegate {
 }
 
 // MARK: - Private Methods
- 
+
 private extension OnboardingViewController {
     func setupOnboardingPages() {
         
@@ -126,12 +127,12 @@ private extension OnboardingViewController {
     
     func setupSubviews() {
         [pageControl,
-                button
-               ].forEach {
-                   $0.translatesAutoresizingMaskIntoConstraints = false
-                   view.addSubview($0)
-               }
-
+         button
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+        
     }
     
     func setupConstraints() {
@@ -162,7 +163,7 @@ private extension OnboardingViewController {
         label.text = labelText
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.textColor = .ypBlackDay
+        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         onboardingVC.view.addSubview(label)
@@ -182,7 +183,3 @@ private extension OnboardingViewController {
         return onboardingVC
     }
 }
-
-
-
- 

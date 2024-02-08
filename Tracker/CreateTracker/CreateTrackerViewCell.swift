@@ -63,5 +63,5 @@ final class CreateTrackerViewCell: UITableViewCell {
         
         titleLabel.attributedText = attributedText
     }
-
+    
 }

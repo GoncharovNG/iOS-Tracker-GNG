@@ -19,7 +19,7 @@ final class ScheduleViewController: UIViewController {
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Расписание"
+        header.text = NSLocalizedString("schedule.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header
@@ -123,7 +123,7 @@ extension ScheduleViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
-   
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
@@ -150,37 +150,37 @@ enum WeekDay: Int, CaseIterable, Codable {
     var name: String {
         switch self {
         case .monday:
-            return "Понедельник"
+            return NSLocalizedString("weekDay.monday", comment: "")
         case .tuesday:
-            return "Вторник"
+            return NSLocalizedString("weekDay.tuesday", comment: "")
         case .wednesday:
-            return "Среда"
+            return NSLocalizedString("weekDay.wednesday", comment: "")
         case .thursday:
-            return "Четверг"
+            return NSLocalizedString("weekDay.thursday", comment: "")
         case .friday:
-            return "Пятница"
+            return NSLocalizedString("weekDay.friday", comment: "")
         case .saturday:
-            return "Суббота"
+            return NSLocalizedString("weekDay.saturday", comment: "")
         case .sunday:
-            return "Воскресенье"
+            return NSLocalizedString("weekDay.sunday", comment: "")
         }
     }
-var shortDaysName: String {
-    switch self {
-    case .monday:
-        return "Пн"
-    case .tuesday:
-        return "Вт"
-    case .wednesday:
-        return "Ср"
-    case .thursday:
-        return "Чт"
-    case .friday:
-        return "Пт"
-    case .saturday:
-        return "Сб"
-    case .sunday:
-        return "Вс"
+    var shortDaysName: String {
+        switch self {
+        case .monday:
+            return "Пн"
+        case .tuesday:
+            return "Вт"
+        case .wednesday:
+            return "Ср"
+        case .thursday:
+            return "Чт"
+        case .friday:
+            return "Пт"
+        case .saturday:
+            return "Сб"
+        case .sunday:
+            return "Вс"
+        }
     }
-}
 }

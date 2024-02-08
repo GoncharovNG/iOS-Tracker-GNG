@@ -21,7 +21,7 @@ final class EventEmojiCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         contentView.addSubview(emojiLabel)
         
         NSLayoutConstraint.activate([

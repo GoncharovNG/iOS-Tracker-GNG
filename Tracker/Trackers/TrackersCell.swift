@@ -19,6 +19,7 @@ final class TrackerCell: UICollectionViewCell {
     private var isCompletedToday: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
+    private let analytics = Analytics.shared
     
     private let trackersDaysAmount: UILabel = {
         let trackersDaysAmount = UILabel()
@@ -73,12 +74,12 @@ final class TrackerCell: UICollectionViewCell {
         return trackerEmoji
     }()
     
- //   let pinnedTracker: UIImageView = {
-//       let pinnedTracker = UIImageView()
- //       pinnedTracker.image = UIImage(named: "Pin")
-//        pinnedTracker.translatesAutoresizingMaskIntoConstraints = false
- //       return pinnedTracker
- //   }()
+    private let pinnedTracker: UIImageView = {
+        let pinnedTracker = UIImageView()
+        pinnedTracker.image = UIImage(named: "Pin")
+        pinnedTracker.translatesAutoresizingMaskIntoConstraints = false
+        return pinnedTracker
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -96,6 +97,8 @@ final class TrackerCell: UICollectionViewCell {
             completedTrackerButton.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
             trackerEmoji.centerXAnchor.constraint(equalTo: emojiBackground.centerXAnchor),
             trackerEmoji.centerYAnchor.constraint(equalTo: emojiBackground.centerYAnchor),
+            pinnedTracker.centerYAnchor.constraint(equalTo: trackerEmoji.centerYAnchor),
+            pinnedTracker.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12)
         ])
     }
     
@@ -114,6 +117,8 @@ final class TrackerCell: UICollectionViewCell {
         
         let image = isCompletedToday ? (UIImage(named: "Tracker Done")?.withTintColor(trackerCard.backgroundColor ?? .ypWhiteDay)) : (UIImage(named: "Plus")?.withTintColor(trackerCard.backgroundColor ?? .ypWhiteDay))
         completedTrackerButton.setImage(image, for: .normal)
+        
+        self.pinnedTracker.isHidden = tracker.pinned ? false : true
     }
     
     private func addSubviews() {
@@ -123,7 +128,7 @@ final class TrackerCell: UICollectionViewCell {
         contentView.addSubview(emojiBackground)
         contentView.addSubview(trackerEmoji)
         contentView.addSubview(trackerDescription)
-//        contentView.addSubview(pinnedTracker)
+        contentView.addSubview(pinnedTracker)
     }
     
     private func formatCompletedDays(_ completedDays: Int) -> String {
@@ -135,15 +140,16 @@ final class TrackerCell: UICollectionViewCell {
         
         switch lastDigit {
         case 1:
-            return "\(completedDays) день"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.day.title", comment: "")
         case 2, 3, 4:
-            return "\(completedDays) дня"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.day.genetive.title", comment: "")
         default:
-            return "\(completedDays) дней"
+            return "\(completedDays) " + NSLocalizedString("trackerCell.days.title", comment: "")
         }
     }
     
     @objc private func completedTracker() {
+        analytics.report("click", params: ["screen": "Main", "item": "track"])
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return
@@ -154,7 +160,7 @@ final class TrackerCell: UICollectionViewCell {
             delegate?.completeTracker(id: trackerId, at: indexPath)
         }
     }
-//    func update(with pinned: UIImage) {
-//        pinnedTracker.image = pinned
-//    }
+    func update(with pinned: UIImage) {
+        pinnedTracker.image = pinned
+    }
 }

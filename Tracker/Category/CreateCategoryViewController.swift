@@ -9,12 +9,14 @@ import UIKit
 
 protocol CategoryActions {
     func appendCategory(category: String)
+    func updateCategory(category:TrackerCategory?, header: String)
     func reload()
 }
 
 final class CreateCategoryViewController: UIViewController {
     
     var categoryViewController: CategoryActions?
+    var categoryToEdit: TrackerCategory?
     
     private let header: UILabel = {
         let header = UILabel()
@@ -93,6 +95,13 @@ final class CreateCategoryViewController: UIViewController {
         ])
     }
     
+    func editCategory(_ category: TrackerCategory, newHeader: String) {
+        header.text = newHeader
+        categoryToEdit = category
+        addCategoryName.text = category.header
+        doneButton.setTitle("Готово", for: .normal)
+    }
+    
     private func addSubviews() {
         view.addSubview(header)
         view.addSubview(addCategoryName)
@@ -103,7 +112,11 @@ final class CreateCategoryViewController: UIViewController {
         guard let category = addCategoryName.text, !category.isEmpty else {
             return
         }
-        categoryViewController?.appendCategory(category: category)
+        if header.text == "Редактирование категории" {
+            categoryViewController?.updateCategory(category: categoryToEdit, header: category)
+        } else {
+            categoryViewController?.appendCategory(category: category)
+        }
         categoryViewController?.reload()
         dismiss(animated: true, completion: nil)
     }

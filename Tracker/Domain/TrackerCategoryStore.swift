@@ -66,18 +66,24 @@ final class TrackerCategoryStore: NSObject {
         trackerCategoryCoreData.trackers = category.trackers.compactMap {
             $0.id
         }
-//            trackerCD.category = trackerCategoryCoreData
         try context.save()
     }
     
     func addTrackerToCategory(to header: TrackerCategory?, tracker: Tracker) throws {
         guard let fromDb = try self.fetchTrackerCategory(with: header) else {
-            fatalError()
+            throw CustomError.coreDataError
         }
         fromDb.trackers = trackerCategories.first {
             $0.header == fromDb.header
         }?.trackers.map { $0.id }
         fromDb.trackers?.append(tracker.id)
+        try context.save()
+    }
+    
+    func deleteCategory(_ category: TrackerCategory?) throws {
+        let toDelete = try fetchTrackerCategory(with: category)
+        guard let toDelete = toDelete else { return }
+        context.delete(toDelete)
         try context.save()
     }
     
@@ -92,7 +98,7 @@ final class TrackerCategoryStore: NSObject {
             .filter { trackers.contains($0.id) })
     }
     func fetchTrackerCategory(with header: TrackerCategory?) throws -> TrackerCategoryCoreData? {
-        guard let header = header else { fatalError() }
+        guard let header = header else { throw CustomError.coreDataError }
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(
             format: "header == %@",
@@ -101,9 +107,9 @@ final class TrackerCategoryStore: NSObject {
         return result.first
     }
 }
-    // MARK: - NSFetchedResultsControllerDelegate
-    extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
-        func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            delegate?.storeCategory()
-        }
+// MARK: - NSFetchedResultsControllerDelegate
+extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.storeCategory()
     }
+}

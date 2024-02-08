@@ -4,6 +4,7 @@
 //
 //  Created by Никита Гончаров on 22.01.2024.
 //
+
 import CoreData
 import UIKit
 
@@ -27,7 +28,7 @@ final class TrackerStore: NSObject {
         try? controller.performFetch()
         return controller
     }()
-        
+    
     private let uiColorMarshalling = UIColorMarshalling()
     weak var delegate: TrackerStoreDelegate?
     
@@ -65,10 +66,24 @@ final class TrackerStore: NSObject {
             $0.rawValue
         }
         do {
+            trackerCoreData.colorIndex = Int16(tracker.colorIndex)
             try context.save()
         } catch {
             print(error)
         }
+    }
+    
+    func updateTracker(_ tracker: Tracker, oldTracker: Tracker?) throws {
+        let updated = try fetchTracker(with: oldTracker)
+        guard let updated = updated else { return }
+        updated.title = tracker.title
+        updated.colorIndex = Int16(tracker.colorIndex)
+        updated.color = uiColorMarshalling.hexString(from: tracker.color)
+        updated.emoji = tracker.emoji
+        updated.schedule = tracker.schedule?.map {
+            $0.rawValue
+        }
+        try context.save()
     }
     
     func tracker(from trackerCoreData: TrackerCoreData) throws -> Tracker {
@@ -78,12 +93,41 @@ final class TrackerStore: NSObject {
               let title = trackerCoreData.title,
               let schedule = trackerCoreData.schedule
         else {
-            fatalError()
+            throw CustomError.coreDataError
         }
-        return Tracker(id: id, title: title, color: color, emoji: emoji, schedule: schedule.compactMap({ WeekDay(rawValue: $0)}))
+        return Tracker(id: id,
+                       title: title,
+                       color: color,
+                       emoji: emoji,
+                       schedule: schedule.compactMap({ WeekDay(rawValue: $0)}),
+                       pinned: trackerCoreData.pinned,
+                       colorIndex: Int(trackerCoreData.colorIndex))
+    }
+    
+    func deleteTracker(_ tracker: Tracker?) throws {
+        let toDelete = try fetchTracker(with: tracker)
+        guard let toDelete = toDelete else { return }
+        context.delete(toDelete)
+        try context.save()
+    }
+    
+    func pinTracker(_ tracker: Tracker?, value: Bool) throws {
+        let toPin = try fetchTracker(with: tracker)
+        guard let toPin = toPin else { return }
+        toPin.pinned = value
+        try context.save()
+    }
+    
+    func fetchTracker(with tracker: Tracker?) throws -> TrackerCoreData? {
+        guard let tracker = tracker else { throw CustomError.coreDataError }
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+        let result = try context.fetch(fetchRequest)
+        return result.first
     }
 }
 
+// MARK: - NSFetchedResultsControllerDelegate
 extension TrackerStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         delegate?.store()

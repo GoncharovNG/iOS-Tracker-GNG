@@ -14,6 +14,7 @@ final class IrregularEventViewController: UIViewController {
     private let addCategoryViewController = CategoryViewController()
     private var selectedCategory: TrackerCategory?
     private var selectedColor: UIColor?
+    private var selectedColorIndex: Int?
     private var selectedEmoji: String?
     private let colors: [UIColor] = [
         .ypColorSelection1, .ypColorSelection2, .ypColorSelection3,
@@ -33,11 +34,11 @@ final class IrregularEventViewController: UIViewController {
         scrollView.isScrollEnabled = true
         return scrollView
     }()
-
+    
     private let header: UILabel = {
         let header = UILabel()
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Новое нерегулярное событие"
+        header.text = NSLocalizedString("irregularEvent.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header
@@ -46,7 +47,7 @@ final class IrregularEventViewController: UIViewController {
     private let addEventName: UITextField = {
         let addTrackerName = UITextField()
         addTrackerName.translatesAutoresizingMaskIntoConstraints = false
-        addTrackerName.placeholder = "Введите название трекера"
+        addTrackerName.placeholder = NSLocalizedString("createTracker.textField.addTrackerName.placeholder", comment: "")
         addTrackerName.backgroundColor = .ypBackgroundDay
         addTrackerName.layer.cornerRadius = 16
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
@@ -71,7 +72,7 @@ final class IrregularEventViewController: UIViewController {
         cancelButton.layer.borderColor = UIColor.ypRed.cgColor
         cancelButton.layer.cornerRadius = 16
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        cancelButton.setTitle("Отменить", for: .normal)
+        cancelButton.setTitle(NSLocalizedString("button.cancel.title", comment: ""), for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         return cancelButton
@@ -97,7 +98,7 @@ final class IrregularEventViewController: UIViewController {
         createButton.backgroundColor = .ypGray
         createButton.layer.cornerRadius = 16
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        createButton.setTitle("Создать", for: .normal)
+        createButton.setTitle(NSLocalizedString("button.create.title", comment: ""), for: .normal)
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         createButton.translatesAutoresizingMaskIntoConstraints = false
         createButton.isEnabled = false
@@ -110,6 +111,8 @@ final class IrregularEventViewController: UIViewController {
         collectionView.register(EventEmojiCell.self, forCellWithReuseIdentifier: "Event emoji cell")
         collectionView.register(EventEmojiHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventEmojiHeader.id)
         collectionView.allowsMultipleSelection = false
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     
@@ -119,6 +122,8 @@ final class IrregularEventViewController: UIViewController {
         collectionView.register(EventColorCell.self, forCellWithReuseIdentifier: "Event color cell")
         collectionView.register(EventColorHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: EventColorHeader.id)
         collectionView.allowsMultipleSelection = false
+        collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
     
@@ -134,11 +139,11 @@ final class IrregularEventViewController: UIViewController {
         setupEmojiCollectionView()
         setupColorCollectionView()
     }
-
+    
     private func setupEventNameTextField() {
         addEventName.delegate = self
     }
-
+    
     private func setupIrregularEventTableView() {
         irregularEventTableView.delegate = self
         irregularEventTableView.dataSource = self
@@ -146,13 +151,13 @@ final class IrregularEventViewController: UIViewController {
         irregularEventTableView.layer.cornerRadius = 16
         irregularEventTableView.separatorStyle = .none
     }
-
+    
     private func setupEmojiCollectionView() {
         emojiCollectionView.dataSource = self
         emojiCollectionView.delegate = self
         emojiCollectionView.translatesAutoresizingMaskIntoConstraints = false
     }
-
+    
     private func setupColorCollectionView() {
         colorCollectionView.dataSource = self
         colorCollectionView.delegate = self
@@ -223,7 +228,16 @@ final class IrregularEventViewController: UIViewController {
               let selectedCategory = selectedCategory else {
             return
         }
-        let newEvent = Tracker(id: UUID(), title: text, color: color, emoji: emoji, schedule: WeekDay.allCases)
+        let newEvent = Tracker(
+            id: UUID(),
+            title: text,
+            color: color,
+            emoji: emoji,
+            schedule: WeekDay.allCases,
+            pinned: false,
+            colorIndex: 0
+        )
+        
         trackersViewController?.appendTracker(tracker: newEvent, category: selectedCategory.header)
         addCategoryViewController.viewModel.addTrackerToCategory(to: selectedCategory, tracker: newEvent)
         trackersViewController?.reload()
@@ -255,12 +269,12 @@ extension IrregularEventViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: irregularEventViewCellReuseIdentifier, for: indexPath) as! IrregularEventViewCell
-            var title = "Категория"
-            if let selectedCategory = selectedCategory {
-                title += "\n" + selectedCategory.header
-            }
-            cell.update(with: title)
-            return cell
+        var title = NSLocalizedString("createTracker.cell.category.title", comment: "")
+        if let selectedCategory = selectedCategory {
+            title += "\n" + selectedCategory.header
+        }
+        cell.update(with: title)
+        return cell
     }
 }
 
@@ -329,7 +343,7 @@ extension IrregularEventViewController: UICollectionViewDataSource {
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: EventColorHeader.id, for: indexPath) as? EventColorHeader else {
                 return UICollectionReusableView()
             }
-            header.headerText = "Цвет"
+            header.headerText = NSLocalizedString("createTracker.header.color.title", comment: "")
             return header
         }
         
@@ -377,6 +391,7 @@ extension IrregularEventViewController: UICollectionViewDelegate {
             cell?.layer.borderColor = cell?.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
             
             selectedColor = cell?.colorView.backgroundColor
+            selectedColorIndex = indexPath.row
         }
     }
     

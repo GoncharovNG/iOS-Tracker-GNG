@@ -9,13 +9,13 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     
-   weak var trackersViewController: TrackersViewController?
+    weak var trackersViewController: TrackersViewController?
     
     private lazy var header: UILabel = {
         let header = UILabel()
         view.addSubview(header)
         header.translatesAutoresizingMaskIntoConstraints = false
-        header.text = "Создание трекера"
+        header.text = NSLocalizedString("addTracker.title", comment: "")
         header.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         header.textColor = .ypBlackDay
         return header
@@ -24,7 +24,12 @@ final class AddTrackerViewController: UIViewController {
     private lazy var habitButton: UIButton = {
         let habitButton = UIButton(type: .custom)
         view.addSubview(habitButton)
-        habitButton.setTitle("Привычка", for: .normal)
+        
+        habitButton.setTitle(
+            NSLocalizedString("addTracker.habbitButton.title", comment: ""),
+            for: .normal
+        )
+        
         habitButton.setTitleColor(.ypWhiteDay, for: .normal)
         habitButton.backgroundColor = .ypBlackDay
         habitButton.layer.cornerRadius = 16
@@ -41,7 +46,12 @@ final class AddTrackerViewController: UIViewController {
         irregularButton.backgroundColor = .ypBlackDay
         irregularButton.layer.cornerRadius = 16
         irregularButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        irregularButton.setTitle("Нерегулярное событие", for: .normal)
+        
+        irregularButton.setTitle(
+            NSLocalizedString("addTracker.irregularButton.title", comment: ""),
+            for: .normal
+        )
+        
         irregularButton.addTarget(self, action: #selector(irregularButtonTapped), for: .touchUpInside)
         irregularButton.translatesAutoresizingMaskIntoConstraints = false
         return irregularButton
@@ -49,7 +59,6 @@ final class AddTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .ypWhiteDay
         
         NSLayoutConstraint.activate([
@@ -71,7 +80,7 @@ final class AddTrackerViewController: UIViewController {
     }
     
     @objc private func habitButtonTapped() {
-        let addHabit = CreateTrackerViewController()
+        let addHabit = CreateTrackerViewController(edit: false)
         addHabit.trackersViewController = self.trackersViewController
         present(addHabit, animated: true)
     }
