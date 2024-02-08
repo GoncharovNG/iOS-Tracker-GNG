@@ -64,7 +64,7 @@ final class TrackerRecordStore: NSObject {
     
     func removeTrackerRecord(_ trackerRecord: TrackerRecord?) throws {
         guard let toDelete = try self.fetchTrackerRecord(with: trackerRecord)
-        else { fatalError() }
+        else { throw CustomError.coreDataError }
         context.delete(toDelete)
         try context.save()
     }
@@ -72,12 +72,12 @@ final class TrackerRecordStore: NSObject {
     func record(from trackerRecordCoreData: TrackerRecordCoreData) throws -> TrackerRecord {
         guard let id = trackerRecordCoreData.id,
               let date = trackerRecordCoreData.date
-        else { fatalError() }
+        else { throw CustomError.coreDataError }
         return TrackerRecord(id: id, date: date)
     }
     
     func fetchTrackerRecord(with trackerRecord: TrackerRecord?) throws -> TrackerRecordCoreData? {
-        guard let trackerRecord else { fatalError() }
+        guard let trackerRecord else { throw CustomError.coreDataError }
         let fetchRequest = TrackerRecordCoreData.fetchRequest()
         fetchRequest.predicate =  NSPredicate(format: "id == %@ AND date == %@", trackerRecord.id as CVarArg, trackerRecord.date as NSDate)
         let result = try context.fetch(fetchRequest)

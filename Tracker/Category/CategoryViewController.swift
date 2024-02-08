@@ -202,7 +202,7 @@ extension CategoryViewController: UITableViewDelegate {
                 
                 let alertController = UIAlertController(title: nil, message: "Эта категория точно не нужна?", preferredStyle: .actionSheet)
                 let deleteConfirmationAction = UIAlertAction(title: "Удалить", style: .destructive) { _ in
-                    try! self.trackerCategoryStore.deleteCategory(category)
+                    try? self.trackerCategoryStore.deleteCategory(category)
                     self.checkEmptyCategoriesScreen()
                     self.categoriesTableView.reloadData()
                 }

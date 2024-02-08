@@ -53,6 +53,7 @@
 		4B9D6BAF2B5D6C6200554FFE /* IrregularEventViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B9D6BAE2B5D6C6200554FFE /* IrregularEventViewCell.swift */; };
 		4B9D6BB92B5D7BF000554FFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B9D6BB82B5D7BF000554FFE /* LaunchScreen.storyboard */; };
 		4BCC8AF32B6855BB00C399FE /* TrackerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC8AF22B6855BB00C399FE /* TrackerError.swift */; };
+		7F91C20A2B75737B007D8189 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F91C2092B75737B007D8189 /* CustomError.swift */; };
 		7FE69CC82B72E27A00AE902D /* FilterStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE69CC72B72E27A00AE902D /* FilterStack.swift */; };
 		8433C9EAAAA455FC01F5AA6C /* Pods_Tracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A812D8BE6AAF9A38914C1119 /* Pods_Tracker.framework */; };
 		D4A072B6407790C3BB2EC46B /* Pods_TrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A394045812170CBE2AE33886 /* Pods_TrackerTests.framework */; };
@@ -121,6 +122,7 @@
 		4B9D6BAE2B5D6C6200554FFE /* IrregularEventViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularEventViewCell.swift; sourceTree = "<group>"; };
 		4B9D6BB82B5D7BF000554FFE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4BCC8AF22B6855BB00C399FE /* TrackerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerError.swift; sourceTree = "<group>"; };
+		7F91C2092B75737B007D8189 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		7FE69CC72B72E27A00AE902D /* FilterStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterStack.swift; sourceTree = "<group>"; };
 		8227099DFB249BB56946F53C /* Pods-Tracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tracker.debug.xcconfig"; path = "Target Support Files/Pods-Tracker/Pods-Tracker.debug.xcconfig"; sourceTree = "<group>"; };
 		89F1074B8FE4018C45EB0916 /* Pods-Tracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tracker.release.xcconfig"; path = "Target Support Files/Pods-Tracker/Pods-Tracker.release.xcconfig"; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				4B1282D02B5F051E00F93D6D /* TrackerStore.swift */,
+				7F91C2092B75737B007D8189 /* CustomError.swift */,
 				4B1282D22B5F055F00F93D6D /* TrackerCategoryStore.swift */,
 				4B1282D42B5F057200F93D6D /* TrackerRecordStore.swift */,
 				4B1282D62B5F059C00F93D6D /* UIColorMarshalling.swift */,
@@ -600,6 +603,7 @@
 				4B1282D52B5F057200F93D6D /* TrackerRecordStore.swift in Sources */,
 				4B1282D32B5F055F00F93D6D /* TrackerCategoryStore.swift in Sources */,
 				4B1282E52B5F0CBB00F93D6D /* EventColorHeader.swift in Sources */,
+				7F91C20A2B75737B007D8189 /* CustomError.swift in Sources */,
 				4B9D6BA42B5D6A5B00554FFE /* CreateTrackerViewController.swift in Sources */,
 				4B1282D92B5F093000F93D6D /* EmojiHeaderView.swift in Sources */,
 				4B1A328A2B607213004D410D /* TrackersEntity.xcdatamodeld in Sources */,

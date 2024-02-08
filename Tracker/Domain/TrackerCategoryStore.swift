@@ -71,7 +71,7 @@ final class TrackerCategoryStore: NSObject {
     
     func addTrackerToCategory(to header: TrackerCategory?, tracker: Tracker) throws {
         guard let fromDb = try self.fetchTrackerCategory(with: header) else {
-            fatalError()
+            throw CustomError.coreDataError
         }
         fromDb.trackers = trackerCategories.first {
             $0.header == fromDb.header
@@ -98,7 +98,7 @@ final class TrackerCategoryStore: NSObject {
             .filter { trackers.contains($0.id) })
     }
     func fetchTrackerCategory(with header: TrackerCategory?) throws -> TrackerCategoryCoreData? {
-        guard let header = header else { fatalError() }
+        guard let header = header else { throw CustomError.coreDataError }
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(
             format: "header == %@",

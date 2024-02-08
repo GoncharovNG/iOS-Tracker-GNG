@@ -11,7 +11,6 @@ protocol TrackersActions {
     func appendTracker(tracker: Tracker, category: String?)
     func updateTracker(tracker: Tracker, oldTracker: Tracker?, category: String?)
     func reload()
-    func showFirstStubScreen()
 }
 
 final class CreateTrackerViewController: UIViewController {

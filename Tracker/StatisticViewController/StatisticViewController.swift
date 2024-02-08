@@ -9,6 +9,7 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
+    private let trackerStore = TrackerStore()
     private let recordStore = TrackerRecordStore()
     let cellReuseIdentifier = "StatisticViewController"
     var trackersViewController: TrackersViewController?
@@ -87,13 +88,15 @@ final class StatisticViewController: UIViewController {
     }
     
     private func showPlaceholder() {
-        if recordStore.trackerRecords.isEmpty {
+        if recordStore.trackerRecords.isEmpty || trackerStore.trackers.isEmpty {
             emptyStatistic.isHidden = false
             emptyStatisticText.isHidden = false
+            
             statisticTableView.isHidden = true
         } else {
             emptyStatistic.isHidden = true
             emptyStatisticText.isHidden = true
+            
             statisticTableView.isHidden = false
         }
     }

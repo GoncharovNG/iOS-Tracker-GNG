@@ -93,7 +93,7 @@ final class TrackerStore: NSObject {
               let title = trackerCoreData.title,
               let schedule = trackerCoreData.schedule
         else {
-            fatalError()
+            throw CustomError.coreDataError
         }
         return Tracker(id: id,
                        title: title,
@@ -119,7 +119,7 @@ final class TrackerStore: NSObject {
     }
     
     func fetchTracker(with tracker: Tracker?) throws -> TrackerCoreData? {
-        guard let tracker = tracker else { fatalError() }
+        guard let tracker = tracker else { throw CustomError.coreDataError }
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
         let result = try context.fetch(fetchRequest)

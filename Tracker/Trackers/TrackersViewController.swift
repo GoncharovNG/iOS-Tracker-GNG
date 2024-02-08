@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 final class TrackersViewController: UIViewController {
     
     private var trackerStore = TrackerStore()
@@ -115,11 +113,7 @@ final class TrackersViewController: UIViewController {
         addSubviews()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTrackerButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
-        if trackerStore.trackers.count > 0 {
-            showFirstStubScreen()
-        } else {
-            showSecondStubScreen()
-        }
+        showVisibleViews()
         trackerStore.delegate = self
         trackerRecordStore.delegate = self
         trackers = trackerStore.trackers.filter { !$0.pinned }
@@ -217,7 +211,7 @@ final class TrackersViewController: UIViewController {
     
     private func filterTrackers(forToday: Bool = false) {
         filterVisibleCategories(forToday: forToday)
-        showSecondStubScreen()
+        showVisibleViews()
         collectionView.reloadData()
     }
     
@@ -247,7 +241,7 @@ final class TrackersViewController: UIViewController {
         .filter { category in
             !category.trackers.isEmpty
         }
-        showSecondStubScreen()
+        showVisibleViews()
     }
 }
 
@@ -302,11 +296,21 @@ extension TrackersViewController: TrackerStoreDelegate {
 extension TrackersViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.filterText = textField.text
-        filterTrackers()
         
+        filterVisibleCategories(forToday: true)
+        
+        if textField.text?.isEmpty ?? true {
+            showVisibleViews()
+            return
+        }
+
+        showSearchViews()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        filterVisibleCategories(forToday: true)
+        showVisibleViews()
         return true
     }
 }
@@ -337,7 +341,7 @@ extension TrackersViewController: TrackersActions {
     
     func updateTracker(tracker: Tracker, oldTracker: Tracker?, category: String?) {
         guard let category = category, let oldTracker = oldTracker else { return }
-        try! self.trackerStore.updateTracker(tracker, oldTracker: oldTracker)
+        try? self.trackerStore.updateTracker(tracker, oldTracker: oldTracker)
         let foundCategory = self.categories.first { ctgry in
             ctgry.header == category
         }
@@ -361,34 +365,35 @@ extension TrackersViewController: TrackersActions {
         self.collectionView.reloadData()
     }
     
-    func showFirstStubScreen() {
-        let emptyVisibleCategories = trackerStore.trackers.count > 0 || visibleCategories.isEmpty
-        if visibleCategories.isEmpty {
+    // Список трекеров
+    func showVisibleViews() {
+        emptySearch.isHidden = true
+        emptySearchText.isHidden = true
+        
+        if trackerStore.trackers.count == 0 || visibleCategories.isEmpty {
             collectionView.isHidden = true
-            emptySearch.isHidden = true
-            emptySearchText.isHidden = true
-        } else {
-            collectionView.isHidden = false
-            emptySearch.isHidden = false
-            emptySearchText.isHidden = false
-        }
-    }
-    
-    func showSecondStubScreen() {
-        let emptyVisibleCategories = visibleCategories.isEmpty
-        if visibleCategories.isEmpty {
-            collectionView.isHidden = true
-            emptyTrackersLogo.isHidden = true
-            emptyTrackersText.isHidden = true
-            emptySearch.isHidden = false
-            emptySearchText.isHidden = false
-        } else {
-            collectionView.isHidden = false
+            
             emptyTrackersLogo.isHidden = false
             emptyTrackersText.isHidden = false
-            emptySearch.isHidden = true
-            emptySearchText.isHidden = true
+        } else {
+            collectionView.isHidden = false
+            
+            emptyTrackersLogo.isHidden = true
+            emptyTrackersText.isHidden = true
         }
+        
+        collectionView.reloadData()
+    }
+    
+    func showSearchViews() {
+        emptyTrackersLogo.isHidden = true
+        emptyTrackersText.isHidden = true
+        
+        collectionView.isHidden = visibleCategories.isEmpty
+        emptySearch.isHidden = !visibleCategories.isEmpty
+        emptySearchText.isHidden = !visibleCategories.isEmpty
+        
+        collectionView.reloadData()
     }
 }
 
@@ -470,7 +475,7 @@ extension TrackersViewController: TrackerCellDelegate {
         let toRemove = completedTrackers.first {
             isSameTrackerRecord(trackerRecord: $0, id: id)
         }
-        try! self.trackerRecordStore.removeTrackerRecord(toRemove)
+        try? self.trackerRecordStore.removeTrackerRecord(toRemove)
     }
 }
 
@@ -519,11 +524,11 @@ extension TrackersViewController: UICollectionViewDelegate {
             let pinAction: UIAction
             if tracker.pinned {
                 pinAction = UIAction(title: "Открепить", handler: { [weak self] _ in
-                    try! self?.trackerStore.pinTracker(tracker, value: false)
+                    try? self?.trackerStore.pinTracker(tracker, value: false)
                 })
             } else {
                 pinAction = UIAction(title: "Закрепить", handler: { [weak self] _ in
-                    try! self?.trackerStore.pinTracker(tracker, value: true)
+                    try? self?.trackerStore.pinTracker(tracker, value: true)
                 })
             }
             
@@ -553,8 +558,9 @@ extension TrackersViewController: UICollectionViewDelegate {
                 
                 let alertController = UIAlertController(title: nil, message: "Уверены что хотите удалить трекер?", preferredStyle: .actionSheet)
                 let deleteConfirmationAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
-                    try! self?.trackerStore.deleteTracker(tracker)
-                    self?.showFirstStubScreen()
+                    try? self?.trackerStore.deleteTracker(tracker)
+                    self?.uncompleteTracker(id: tracker.id, at: indexPath)
+                    self?.showVisibleViews()
                 }
                 alertController.addAction(deleteConfirmationAction)
                 
