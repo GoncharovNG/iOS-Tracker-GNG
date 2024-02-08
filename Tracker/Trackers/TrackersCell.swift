@@ -149,6 +149,7 @@ final class TrackerCell: UICollectionViewCell {
     }
     
     @objc private func completedTracker() {
+        analytics.report("click", params: ["screen": "Main", "item": "track"])
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId")
             return

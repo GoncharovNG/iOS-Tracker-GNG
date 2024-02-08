@@ -111,7 +111,8 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         selectCurrentDay()
-        view.backgroundColor = .ypWhiteDay;       addSubviews()
+        view.backgroundColor = .ypWhiteDay
+        addSubviews()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTrackerButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         
@@ -267,7 +268,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
     }
     
     func completedTrackersToday() {
-            analytics.report("click", params: ["event": "tap", "screen": "Main"])
+            analytics.report("track", params: ["event": "tap", "screen": "Main"])
             trackers = trackerStore.trackers.filter { isTrackerCompletedToday(id: $0.id) }
             
             filterVisibleCategories()
@@ -275,7 +276,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
         }
         
         func unCompletedTrackersToday() {
-            analytics.report("click", params: ["event": "tap", "screen": "Main"])
+            analytics.report("track", params: ["event": "tap", "screen": "Main"])
             trackers = trackerStore.trackers.filter { !isTrackerCompletedToday(id: $0.id) }
             filterVisibleCategories()
             collectionView.reloadData()
