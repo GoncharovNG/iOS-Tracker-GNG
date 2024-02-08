@@ -115,7 +115,11 @@ final class TrackersViewController: UIViewController {
         addSubviews()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: addTrackerButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
-        
+        if trackerStore.trackers.count > 0 {
+            showFirstStubScreen()
+        } else {
+            showSecondStubScreen()
+        }
         trackerStore.delegate = self
         trackerRecordStore.delegate = self
         trackers = trackerStore.trackers.filter { !$0.pinned }
@@ -124,7 +128,7 @@ final class TrackersViewController: UIViewController {
         categories = categoryViewModel.categories
         categories.insert(TrackerCategory(header: "Закрепленные", trackers: pinnedTrackers), at: 0)
         filterVisibleCategories()
-        showFirstStubScreen()
+        
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -358,6 +362,7 @@ extension TrackersViewController: TrackersActions {
     }
     
     func showFirstStubScreen() {
+        let emptyVisibleCategories = trackerStore.trackers.count > 0 || visibleCategories.isEmpty
         if visibleCategories.isEmpty {
             collectionView.isHidden = true
             emptySearch.isHidden = true
@@ -370,6 +375,7 @@ extension TrackersViewController: TrackersActions {
     }
     
     func showSecondStubScreen() {
+        let emptyVisibleCategories = visibleCategories.isEmpty
         if visibleCategories.isEmpty {
             collectionView.isHidden = true
             emptyTrackersLogo.isHidden = true
